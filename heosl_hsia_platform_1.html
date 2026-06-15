@@ -1,0 +1,688 @@
+<!-- HEOSL HSIA Commitment & Recommendation Tracking Platform -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HEOSL HSIA Commitment Platform</title>
+<style>
+  :root{
+    --ink:#1b211e; --muted:#5d655f; --hint:#8a918b;
+    --bg:#f7f5ef; --surface:#ffffff; --line:rgba(27,33,30,.12); --line2:rgba(27,33,30,.22);
+    --brand:#0f5c4d; --brand-soft:#e3efe9; --brand-ink:#0b463a;
+    --done:#1d7a4d; --done-bg:#e4f3ea;
+    --over:#b5302e; --over-bg:#fbe9e8;
+    --warn:#9a6410; --warn-bg:#faeeda;
+    --p1:#a32d4e; --p1-bg:#fbeaf0; --p2:#9a6410; --p2-bg:#faeeda; --p3:#5d655f; --p3-bg:#eeede7;
+    --dot:#0f5c4d;
+    --radius:10px; --radius-sm:7px;
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --ink:#e7e9e5; --muted:#a3aaa3; --hint:#7c837c;
+      --bg:#13161a; --surface:#1c2025; --line:rgba(231,233,229,.13); --line2:rgba(231,233,229,.24);
+      --brand:#48b89a; --brand-soft:#16302a; --brand-ink:#7fd3bd;
+      --done:#5cc08a; --done-bg:#15302200;
+      --done:#5cc08a; --done-bg:#163027;
+      --over:#ef8987; --over-bg:#3a1f1e;
+      --warn:#e0a64a; --warn-bg:#352a16;
+      --p1:#e890a8; --p1-bg:#34202a; --p2:#e0a64a; --p2-bg:#352a16; --p3:#a3aaa3; --p3-bg:#262a2e;
+      --dot:#48b89a;
+    }
+  }
+  [data-theme="light"]{
+    --ink:#1b211e; --muted:#5d655f; --hint:#8a918b; --bg:#f7f5ef; --surface:#ffffff;
+    --line:rgba(27,33,30,.12); --line2:rgba(27,33,30,.22); --brand:#0f5c4d; --brand-soft:#e3efe9; --brand-ink:#0b463a;
+    --done:#1d7a4d; --done-bg:#e4f3ea; --over:#b5302e; --over-bg:#fbe9e8; --warn:#9a6410; --warn-bg:#faeeda;
+    --p1:#a32d4e; --p1-bg:#fbeaf0; --p2:#9a6410; --p2-bg:#faeeda; --p3:#5d655f; --p3-bg:#eeede7; --dot:#0f5c4d;
+  }
+  [data-theme="dark"]{
+    --ink:#e7e9e5; --muted:#a3aaa3; --hint:#7c837c; --bg:#13161a; --surface:#1c2025;
+    --line:rgba(231,233,229,.13); --line2:rgba(231,233,229,.24); --brand:#48b89a; --brand-soft:#16302a; --brand-ink:#7fd3bd;
+    --done:#5cc08a; --done-bg:#163027; --over:#ef8987; --over-bg:#3a1f1e; --warn:#e0a64a; --warn-bg:#352a16;
+    --p1:#e890a8; --p1-bg:#34202a; --p2:#e0a64a; --p2-bg:#352a16; --p3:#a3aaa3; --p3-bg:#262a2e; --dot:#48b89a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.55;
+    font-size:15px;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 18px 64px;}
+  a{color:inherit}
+  button{font-family:inherit}
+  .num{font-variant-numeric:tabular-nums}
+  .mono{font-family:var(--mono);font-size:.86em}
+
+  header.top{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);}
+  .topbar{max-width:1080px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .brandmark{display:flex;align-items:center;gap:11px;}
+  .logo{width:34px;height:34px;border-radius:9px;background:var(--brand);color:#fff;display:flex;
+    align-items:center;justify-content:center;font-weight:600;font-size:14px;flex:none;}
+  .brandmark h1{font-size:15px;margin:0;font-weight:600;letter-spacing:-.01em;}
+  .brandmark p{font-size:12px;margin:0;color:var(--muted);}
+  .nav{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap;}
+  .nav button{background:none;border:none;color:var(--muted);font-size:13.5px;padding:7px 12px;border-radius:8px;cursor:pointer;}
+  .nav button:hover{background:var(--surface);color:var(--ink)}
+  .nav button.active{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:inset 0 0 0 1px var(--line)}
+  .themebtn{background:none;border:1px solid var(--line);color:var(--muted);width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:16px;}
+  .savetag{font-size:11px;color:var(--hint);display:flex;align-items:center;gap:5px;}
+  .savedot{width:7px;height:7px;border-radius:50%;background:var(--done)}
+
+  .page{padding-top:24px;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1}}
+  .ttl{font-size:21px;font-weight:600;margin:0 0 3px;letter-spacing:-.015em;}
+  .sub{font-size:14px;color:var(--muted);margin:0 0 22px;max-width:62ch}
+  .eyebrow{font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--hint);font-weight:600;margin:30px 0 12px;}
+
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;}
+  .metric{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:15px 16px;}
+  .metric .lbl{font-size:12.5px;color:var(--muted);}
+  .metric .val{font-size:27px;font-weight:600;letter-spacing:-.02em;margin-top:2px;}
+  .metric .val small{font-size:13px;color:var(--hint);font-weight:400}
+  .metric.alert{background:var(--over-bg);border-color:transparent}
+  .metric.alert .lbl{color:var(--over)} .metric.alert .val{color:var(--over)}
+
+  .banner{display:flex;gap:11px;align-items:flex-start;background:var(--over-bg);border:1px solid var(--over);
+    border-radius:var(--radius);padding:13px 15px;margin:18px 0;}
+  .banner i{color:var(--over);font-size:19px;flex:none;margin-top:1px}
+  .banner .b-body{font-size:13.5px;color:var(--over)}
+  .banner .b-body b{font-weight:600}
+  .banner ul{margin:7px 0 0;padding-left:2px;list-style:none;display:grid;gap:5px}
+  .banner li{display:flex;gap:7px;align-items:baseline}
+  .banner li .od{font-size:11px;color:var(--over);white-space:nowrap}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin-bottom:14px;}
+  .panel h3{font-size:15px;font-weight:600;margin:0 0 4px}
+  .panel .phint{font-size:12.5px;color:var(--muted);margin:0 0 14px}
+
+  .cprow{display:grid;gap:8px}
+  .cp{display:flex;gap:11px;align-items:center;padding:9px 11px;border:1px solid var(--line);border-radius:var(--radius-sm);}
+  .cp .cpn{font-size:11px;font-weight:600;color:var(--brand-ink);background:var(--brand-soft);width:22px;height:22px;
+    border-radius:6px;display:flex;align-items:center;justify-content:center;flex:none}
+  .cp .cpt{flex:1;font-size:13.5px}
+  .cp .cpt small{display:block;color:var(--muted);font-size:11.5px}
+
+  .commbreak{display:grid;gap:8px}
+  .cb{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:11px 13px;border:1px solid var(--line);
+    border-radius:var(--radius-sm);cursor:pointer;background:var(--surface)}
+  .cb:hover{border-color:var(--line2)}
+  .cb .cbhead{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px}
+  .cb .cbmeta{font-size:12px;color:var(--muted);margin-top:5px;display:flex;gap:8px;flex-wrap:wrap}
+  .bar{height:7px;background:var(--bg);border-radius:99px;overflow:hidden;margin-top:8px}
+  .bar > span{display:block;height:100%;background:var(--brand);border-radius:99px;transition:width .4s ease}
+  .cb .pct{font-size:18px;font-weight:600;text-align:right;min-width:48px}
+  .cb .odpill{font-size:11px;color:var(--over);background:var(--over-bg);padding:2px 8px;border-radius:99px;margin-top:5px;display:inline-block}
+
+  .tier{font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:99px;letter-spacing:.02em}
+  .t1{background:var(--p1-bg);color:var(--p1)} .t2{background:var(--p2-bg);color:var(--p2)} .t3{background:var(--p3-bg);color:var(--p3)}
+
+  .chip{font-size:11.5px;padding:3px 9px;border-radius:99px;background:var(--bg);color:var(--muted);border:1px solid var(--line)}
+  .chip.crit{background:var(--over-bg);color:var(--over);border-color:transparent}
+  .chip.high{background:var(--warn-bg);color:var(--warn);border-color:transparent}
+  .chip.med{background:var(--bg);color:var(--muted)}
+
+  .backlink{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);background:none;border:none;cursor:pointer;padding:0;margin-bottom:14px}
+  .backlink:hover{color:var(--ink)}
+
+  .detailhead{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+  .detailhead .dh-name{display:flex;align-items:center;gap:9px}
+  .detailhead .dh-name h2{font-size:22px;margin:0;font-weight:600;letter-spacing:-.02em}
+  .ring{display:flex;align-items:center;gap:12px}
+  .ringwrap{position:relative;width:62px;height:62px;flex:none}
+  .ringtxt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:15px;font-weight:600}
+  .ringtxt small{font-size:9.5px;color:var(--muted);font-weight:400;letter-spacing:.04em}
+  .chiprow{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0 4px}
+
+  .commit{border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 13px;margin-bottom:9px;background:var(--surface)}
+  .commit.over{border-color:var(--over)}
+  .commit.done{background:var(--done-bg);border-color:transparent}
+  .commit-top{display:flex;gap:11px;align-items:flex-start}
+  .commit .cx{appearance:none;width:19px;height:19px;border:1.8px solid var(--line2);border-radius:5px;flex:none;margin-top:2px;cursor:pointer;position:relative;background:var(--surface)}
+  .commit .cx:checked{background:var(--done);border-color:var(--done)}
+  .commit .cx:checked::after{content:"";position:absolute;left:5.5px;top:2px;width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+  .commit .cx:disabled{cursor:not-allowed;opacity:.5}
+  .commit .cx:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+  .commit .ct{flex:1;min-width:0}
+  .commit .ctitle{font-size:14.5px;font-weight:500}
+  .commit .cmeta{font-size:12px;color:var(--muted);margin-top:4px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .commit .cmeta .sep{opacity:.5}
+  .srctag{font-size:11px;padding:1px 7px;border-radius:99px;white-space:nowrap}
+  .srctag.tracker{color:var(--done);background:var(--done-bg)}
+  .srctag.derived{color:var(--muted);background:var(--bg);border:1px solid var(--line)}
+  .badge{font-size:11px;font-weight:500;white-space:nowrap;padding:3px 9px;border-radius:99px;flex:none}
+  .b-done{color:var(--done);background:var(--done-bg)} .b-over{color:var(--over);background:var(--over-bg)}
+  .b-warn{color:var(--warn);background:var(--warn-bg)} .b-prog{color:var(--muted);background:var(--bg)}
+  .cpflag{font-size:10px;font-weight:600;color:var(--brand-ink);background:var(--brand-soft);padding:2px 7px;border-radius:99px}
+
+  .evbox{margin-top:9px;margin-left:30px}
+  .evhas{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:var(--done);background:var(--done-bg);padding:7px 10px;border-radius:var(--radius-sm)}
+  .evhas i{margin-top:2px}
+  .evhas .evtext{flex:1;color:var(--ink)}
+  .evhas .evtext b{color:var(--done);font-weight:600;font-size:11px;display:block;letter-spacing:.03em;text-transform:uppercase;margin-bottom:1px}
+  .evgate{display:inline-flex;gap:6px;align-items:center;font-size:12px;color:var(--over);background:var(--over-bg);padding:5px 10px;border-radius:var(--radius-sm)}
+  .lnk{background:none;border:none;color:var(--brand);font-size:12px;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px}
+  .evedit{margin-top:8px}
+  .evedit textarea{width:100%;border:1px solid var(--line2);border-radius:var(--radius-sm);padding:8px 10px;font-family:inherit;font-size:13px;color:var(--ink);background:var(--surface);resize:vertical;min-height:54px}
+  .evedit textarea:focus{outline:2px solid var(--brand);outline-offset:0;border-color:transparent}
+  .evedit .req{font-size:11.5px;color:var(--muted);margin:0 0 6px}
+  .btnrow{display:flex;gap:8px;margin-top:8px}
+  .btn{font-size:12.5px;padding:6px 13px;border-radius:8px;border:1px solid var(--line2);background:var(--surface);color:var(--ink);cursor:pointer}
+  .btn:hover{background:var(--bg)}
+  .btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+  .btn.primary:hover{filter:brightness(1.05)}
+  .btn.ghost{border-color:transparent;color:var(--muted)}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+
+  .plot{position:relative;height:280px;margin:8px 8px 30px 78px;border-left:1px solid var(--line2);border-bottom:1px solid var(--line2)}
+  .plot .axl{position:absolute;font-size:11px;color:var(--hint)}
+  .plot .quad{position:absolute;font-size:10px;font-weight:500}
+  .plot .mid-v{position:absolute;left:50%;top:0;bottom:0;border-left:1px dashed var(--line)}
+  .plot .mid-h{position:absolute;top:50%;left:0;right:0;border-top:1px dashed var(--line)}
+  .dot{position:absolute;transform:translate(-50%,-50%);text-align:center;cursor:default}
+  .dot .pt{display:block;width:13px;height:13px;border-radius:50%;background:var(--dot);margin:0 auto;border:2px solid var(--surface)}
+  .dot .pt.mand{background:var(--over)}
+  .dot .lab{font-size:10px;color:var(--muted);white-space:nowrap;display:block;margin-top:2px;max-width:110px;overflow:hidden;text-overflow:ellipsis}
+
+  .asklist{display:grid;gap:7px;margin-top:4px}
+  .askrow{display:flex;gap:10px;align-items:center;padding:9px 11px;border:1px solid var(--line);border-radius:var(--radius-sm)}
+  .askrow .sco{font-size:11px;color:var(--muted);white-space:nowrap}
+  .askrow .akt{flex:1;font-size:13.5px}
+  .askrow .mand{font-size:10px;color:var(--over);font-weight:600}
+
+  .reccol{margin-bottom:14px}
+  .recgrouptitle{display:flex;align-items:center;gap:9px;margin:0 0 10px}
+  .recgrouptitle .ricon{width:30px;height:30px;border-radius:8px;background:var(--brand-soft);color:var(--brand-ink);display:flex;align-items:center;justify-content:center;font-size:16px;flex:none}
+  .recgrouptitle h3{font-size:15.5px;margin:0;font-weight:600}
+  .recgrouptitle p{font-size:12px;margin:0;color:var(--muted)}
+  .recitem{display:flex;gap:10px;padding:11px 0;border-top:1px solid var(--line)}
+  .recitem:first-of-type{border-top:none}
+  .recitem .rn{font-size:12px;color:var(--hint);font-weight:600;font-family:var(--mono);flex:none;margin-top:1px}
+  .recitem .rt b{font-weight:600}
+  .recitem .rt p{margin:3px 0 0;font-size:13px;color:var(--muted)}
+
+  .kpicards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+  .kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 15px}
+  .kpi .kcat{font-size:10.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:99px;display:inline-block;margin-bottom:9px}
+  .kpi .kname{font-size:14px;font-weight:500;line-height:1.4}
+  .kpi .kvals{display:flex;align-items:center;gap:9px;margin:11px 0 8px;font-size:13px}
+  .kpi .kbase{color:var(--muted)} .kpi .ktarget{font-weight:600;color:var(--brand)}
+  .kpi .kfreq{font-size:11.5px;color:var(--hint)}
+  .kc-health{background:var(--over-bg);color:var(--over)} .kc-gender{background:var(--p1-bg);color:var(--p1)}
+  .kc-econ{background:var(--brand-soft);color:var(--brand-ink)} .kc-incl{background:var(--warn-bg);color:var(--warn)}
+  .kc-gov{background:var(--p3-bg);color:var(--p3)} .kc-food{background:var(--done-bg);color:var(--done)}
+
+  .startctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:11px 14px;margin-bottom:18px}
+  .startctl input[type=date]{font-family:inherit;font-size:13px;border:1px solid var(--line2);border-radius:7px;padding:5px 9px;background:var(--surface);color:var(--ink)}
+  .startctl .resetbtn{margin-left:auto}
+
+  .footer{margin-top:34px;font-size:12px;color:var(--hint);border-top:1px solid var(--line);padding-top:16px;line-height:1.7}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.30.0/tabler-icons.min.css">
+
+<header class="top">
+  <div class="topbar">
+    <div class="brandmark">
+      <div class="logo">HS</div>
+      <div>
+        <h1>HEOSL HSIA commitment platform</h1>
+        <p>Aferolow–Uzere development · OML 30 · Delta State</p>
+      </div>
+    </div>
+    <nav class="nav" id="nav">
+      <button data-view="summary" class="active">Summary</button>
+      <button data-view="communities">Communities</button>
+      <button data-view="asks">Recommendations</button>
+      <button data-view="kpis">KPIs</button>
+    </nav>
+    <span class="savetag" id="savetag"><span class="savedot"></span>Saved</span>
+    <button class="themebtn" id="themebtn" aria-label="Toggle light or dark theme"><i class="ti ti-moon"></i></button>
+  </div>
+</header>
+
+<div class="wrap"><div id="app"></div>
+  <div class="footer">
+    Source: HEOSL Health &amp; Social Impact Assessment (Aferolow–Uzere New Field Development), prepared by Teasoo Consulting Limited, 2026. Commitments drawn from the SIMP Action Tracker (Table 73), Mitigation Measures (Table 71) and the community asks (Table 70); mandatory conditions precedent from Table 83. Community weighting from the Composite Priority Ranking (Table 69); KPIs verbatim from Table 74; recommendations from sections 16.3–16.6.<br>
+    Verified against the report: the 14 “SIMP Tracker” commitments reproduce the report’s owner and verification evidence exactly. The 8 “Derived” commitments reproduce the report’s action, target communities, standard and timeline; their responsible officer is mapped to the SIMP governance roles in §11.2 and their verification text is a suggested artifact, not report wording. Deadlines are computed from an assumed, editable programme-start date because the report states obligations as relative timeframes (e.g. “30 days”, “Year 1 Q1”). Impact and effort scores for community asks are working estimates derived from the Impact Significance Matrix (Table 68) and stated demand (Table 53) — a prioritisation aid, not findings from the report. Your ticks and evidence notes are saved to this device.
+  </div>
+</div>
+
+<script>
+/* ---------- DATA ---------- */
+const COMMUNITIES=[
+ {id:'eriemu', name:'Eriemu/Owevwe', tier:1, wash:'Critical', disease:'High', vuln:76.4, livelihood:'High'},
+ {id:'olomoro',name:'Olomoro',       tier:1, wash:'Medium-high', disease:'High', vuln:76.5, livelihood:'High'},
+ {id:'oleh',   name:'Oleh',          tier:1, wash:'Medium', disease:'Critical', vuln:60.0, livelihood:'Critical'},
+ {id:'otor',   name:'Otor-Owhe',     tier:2, wash:'High', disease:'Medium', vuln:63.5, livelihood:'High'},
+ {id:'emeragha',name:'Emeragha',     tier:2, wash:'High', disease:'High', vuln:63.0, livelihood:'High'},
+ {id:'uzere',  name:'Uzere',         tier:3, wash:'Medium-high', disease:'Low', vuln:54.4, livelihood:'Medium'},
+ {id:'afiesere',name:'Afiesere',     tier:3, wash:'Low', disease:'Medium', vuln:48.8, livelihood:'Medium'},
+];
+const ALL=COMMUNITIES.map(c=>c.id);
+
+const COMMITMENTS=[
+ {id:'arrears',title:'Resolve contractor payment arrears',ref:'10.2E',due:30,dueLabel:'30 days',owner:'Local Content Officer',ev:'Payment confirmation; community-leader acknowledgement',std:'PIA 257; PS2',comm:['otor','emeragha'],cp:true,cat:'Employment'},
+ {id:'disclose',title:'Disclose EIA & HSIA to Olomoro; release land-ownership records',ref:'10.2H',due:30,dueLabel:'30 days',owner:'Community Relations Manager',ev:'Signed community receipt; meeting minutes',std:'EIA Act; PS1',comm:['olomoro'],cp:true,cat:'Disclosure'},
+ {id:'mediation',title:'Appoint independent mediator for Oleh–Olomoro well dispute',ref:'10.2H',due:45,dueLabel:'45 days',owner:'Managing Director',ev:'Mediator appointment letter; agreed terms of reference',std:'PIA 257; PS5',comm:['oleh','olomoro'],cp:true,cat:'Dispute'},
+ {id:'healthinvest',title:'Commission independent public-health investigation',ref:'10.2B',due:60,dueLabel:'60 days',owner:'HSE Manager',ev:'Investigation report; findings disclosed to communities',std:'PS4',comm:['uzere','olomoro'],cp:true,cat:'Health'},
+ {id:'vibration',title:'Structural assessment of vibration-damaged buildings',ref:'10.2F',due:60,dueLabel:'60 days',owner:'HSE Manager',ev:'Engineering report; compensation offers issued',std:'PS4; PS1',comm:['eriemu'],cp:false,cat:'Infrastructure'},
+ {id:'heritage',title:'Cultural-heritage mapping (all communities)',ref:'10.2G',due:75,dueLabel:'Pre-construction',owner:'Community Relations Manager',ev:'Geo-referenced heritage map per community; CHMP completed',std:'PS8',comm:ALL,cp:true,cat:'Cultural'},
+ {id:'seash',title:'Complete & approve SEA/SH action plan',ref:'10.2D',due:75,dueLabel:'Pre-construction (pre-drilling)',owner:'Community Relations Mgr + HSE',ev:'Approved plan; all worker codes of conduct signed',std:'PS1; PS4',comm:ALL,cp:false,cat:'Gender'},
+ {id:'employquota',title:'Negotiate community employment-quota framework',ref:'10.2E',due:75,dueLabel:'Pre-construction',owner:'Local Content Officer',ev:'Signed framework documents per community',std:'PIA 257; PS2',comm:ALL,cp:false,cat:'Employment'},
+ {id:'skills',title:'Launch Local Content Skills Development Programme',ref:'10.3',due:75,dueLabel:'Pre-construction',owner:'Local Content Officer',ev:'Programme operational; enrolment records',std:'PS2; PIA',comm:ALL,cp:false,cat:'Employment'},
+ {id:'workhealth',title:'Approve Workforce Health Management Plan',ref:'10.3',due:75,dueLabel:'Pre-construction',owner:'HSE Manager',ev:'Approved plan; pre-deployment screening records',std:'PS4',comm:ALL,cp:false,cat:'Health'},
+ {id:'fpic',title:'Establish land access & FPIC monitoring protocol',ref:'10.3',due:75,dueLabel:'Pre-construction',owner:'Community Relations Manager',ev:'FPIC documentation per affected household before disturbance',std:'PS7',comm:ALL,cp:false,cat:'Livelihoods'},
+ {id:'lrp',title:'Submit Livelihood Restoration Plan to NUPRC',ref:'10.2A',due:90,dueLabel:'90 days',owner:'Community Relations Manager',ev:'NUPRC submission confirmation',std:'PS5; PIA',comm:['afiesere','oleh','olomoro'],cp:false,cat:'Livelihoods'},
+ {id:'olehhc',title:'Commence Oleh health-centre construction (2018 pledge)',ref:'10.2F',due:120,dueLabel:'Year 1 Q1',owner:'MD + HCDT Board',ev:'Contract signed; groundbreaking ceremony',std:'PS4; PIA 251',comm:['oleh'],cp:false,cat:'Infrastructure'},
+ {id:'olomohosp',title:'Commence Olomoro Central Hospital rehabilitation',ref:'10.2F',due:120,dueLabel:'Year 1 Q1',owner:'HCDT Board',ev:'Works contract signed; X-ray machine order placed',std:'PS4; PIA 251',comm:['olomoro'],cp:false,cat:'Infrastructure'},
+ {id:'healthfund',title:'Establish Community Health Fund within HCDT',ref:'10.2B',due:120,dueLabel:'Year 1 Q1',owner:'HCDT Board',ev:'Fund established; drug-supplementation log',std:'PS4',comm:ALL,cp:false,cat:'Health'},
+ {id:'wash62',title:'Eliminate toilet-over-water (62 households)',ref:'10.2C',due:330,dueLabel:'Year 1',owner:'Community Relations Manager',ev:'62 households confirmed with improved sanitation',std:'PS4',comm:ALL,cp:false,cat:'WASH'},
+ {id:'borehole',title:'Deliver solar-borehole programme',ref:'10.2C',due:330,dueLabel:'Year 1',owner:'HCDT Board',ev:'Boreholes operational; water-quality test results confirmed',std:'PS4; PIA 251',comm:['eriemu','emeragha','otor'],cp:false,cat:'WASH'},
+ {id:'cookfuel',title:'Cooking-fuel transition (LPG kits; solar ovens)',ref:'10.3',due:330,dueLabel:'Year 1',owner:'HCDT Board',ev:'LPG kit distribution log; household uptake survey',std:'PS4',comm:['eriemu','emeragha','uzere'],cp:false,cat:'WASH'},
+ {id:'genderemploy',title:'Reach 20% female workforce in non-traditional roles',ref:'10.2D',due:330,dueLabel:'Year 1',owner:'Local Content Officer',ev:'Workforce-composition data; payroll gender analysis',std:'PS2',comm:ALL,cp:false,cat:'Gender'},
+ {id:'roads',title:'Formalise road-maintenance SLA',ref:'10.2F',due:330,dueLabel:'Year 1',owner:'HSE / Community Relations Mgr',ev:'Signed SLA; defined response timeframes',std:'PS4',comm:ALL,cp:false,cat:'Infrastructure'},
+ {id:'schools',title:'School-support programme (fencing; lab; materials)',ref:'10.2F',due:330,dueLabel:'Year 1',owner:'HCDT Board',ev:'Fencing completed; lab rehabilitated; WAEC accreditation progress',std:'PS1',comm:ALL,cp:false,cat:'Education'},
+ {id:'gasflare',title:'Run gas-flare health-screening programme',ref:'10.2B',due:330,dueLabel:'Year 1',owner:'HSE Manager',ev:'Quarterly screening records (respiratory, TB, cardiovascular)',std:'PS4',comm:['oleh','olomoro','uzere','eriemu'],cp:false,cat:'Health'},
+];
+// The 14 commitments lifted verbatim from the SIMP Action Tracker (Table 73): owner + verification evidence as written in the report.
+const TRACKER_IDS=new Set(['arrears','disclose','mediation','healthinvest','vibration','heritage','seash','employquota','lrp','olehhc','olomohosp','wash62','borehole','genderemploy']);
+function srcOf(c){return TRACKER_IDS.has(c.id)?'tracker':'derived';}
+
+const ASKS=[
+ {id:'k_arrears',label:'Resolve contractor payment arrears',imp:9,eff:2,comm:['otor','emeragha'],mand:true,cat:'Employment'},
+ {id:'k_disclose',label:'Disclose HSIA & EIA documents',imp:8,eff:2,comm:['olomoro'],mand:true,cat:'Disclosure'},
+ {id:'k_dispute',label:'Independent well-ownership dispute resolution',imp:9,eff:5,comm:['oleh','olomoro'],mand:true,cat:'Dispute'},
+ {id:'k_heritage',label:'Community-led cultural-heritage mapping',imp:8,eff:5,comm:ALL,mand:true,cat:'Cultural'},
+ {id:'k_olehhc',label:'Fulfil 2018 health-centre commitment',imp:9,eff:8,comm:['oleh'],mand:false,cat:'Infrastructure'},
+ {id:'k_olomohosp',label:'Rehabilitate Olomoro Central Hospital',imp:9,eff:9,comm:['olomoro'],mand:false,cat:'Infrastructure'},
+ {id:'k_healthinvest',label:'Public-health investigation (child deaths)',imp:8,eff:4,comm:['uzere','olomoro'],mand:false,cat:'Health'},
+ {id:'k_gasflare',label:'Gas-flare health screening',imp:8,eff:6,comm:['oleh','olomoro','uzere','eriemu'],mand:false,cat:'Health'},
+ {id:'k_healthfund',label:'Community Health Fund',imp:8,eff:6,comm:ALL,mand:false,cat:'Health'},
+ {id:'k_genderemploy',label:'Gender employment targets',imp:7,eff:4,comm:ALL,mand:false,cat:'Gender'},
+ {id:'k_scholar',label:'Ring-fence 40% scholarships for girls',imp:6,eff:3,comm:ALL,mand:false,cat:'Gender'},
+ {id:'k_cartel',label:'Vendor audit (contractor cartel)',imp:7,eff:5,comm:['oleh'],mand:false,cat:'Employment'},
+ {id:'k_vibration',label:'Vibration-damage assessment',imp:6,eff:4,comm:['eriemu'],mand:false,cat:'Infrastructure'},
+ {id:'k_roads',label:'Road-maintenance SLA',imp:6,eff:6,comm:ALL,mand:false,cat:'Infrastructure'},
+ {id:'k_schools',label:'School support (fencing, lab)',imp:7,eff:6,comm:ALL,mand:false,cat:'Education'},
+ {id:'k_lrp',label:'Livelihood Restoration Plan',imp:8,eff:6,comm:['afiesere','oleh','olomoro'],mand:false,cat:'Livelihoods'},
+ {id:'k_lrfund',label:'Livelihood Restoration Fund (134 HH)',imp:8,eff:7,comm:ALL,mand:false,cat:'Livelihoods'},
+ {id:'k_fishery',label:'Fishery-restoration feasibility study',imp:5,eff:5,comm:['otor'],mand:false,cat:'Livelihoods'},
+ {id:'k_aginputs',label:'Agricultural inputs near spill sites',imp:6,eff:4,comm:['oleh','olomoro','afiesere','otor'],mand:false,cat:'Livelihoods'},
+ {id:'k_erigbo',label:'Reparative engagement, Erigbo lineage',imp:6,eff:3,comm:['olomoro'],mand:false,cat:'Cultural'},
+];
+
+const KPIS=[
+ {name:'Households with grievance-mechanism access',base:'25%',target:'50% Y1 · 75% Y2',freq:'Quarterly awareness survey',cat:'incl',catlbl:'Social inclusion'},
+ {name:'Women aware of the project',base:'28.4%',target:'60% by Year 1',freq:'Quarterly gender survey',cat:'gender',catlbl:'Gender equity'},
+ {name:'Female share of HEOSL/contractor workforce',base:'~0%',target:'20% Y1 · 30% Y3',freq:'Quarterly payroll report',cat:'econ',catlbl:'Local economy'},
+ {name:'WASH index — Eriemu',base:'1.65 / 3.0',target:'≥2.0 by Year 2',freq:'Annual WASH survey',cat:'health',catlbl:'Community health'},
+ {name:'Households with sub-standard sanitation',base:'44.3%',target:'<30% by Year 2',freq:'Annual WASH survey',cat:'health',catlbl:'Community health'},
+ {name:'PHC antimalarial stock-out rate',base:'Universal',target:'Zero >7 days from Y1',freq:'Monthly drug inventory',cat:'health',catlbl:'Community health'},
+ {name:'Contractor payment delays beyond 30 days',base:'2 cases',target:'Zero from Year 1',freq:'Monthly payment tracking',cat:'econ',catlbl:'Local economy'},
+ {name:'Grievances unresolved beyond 30 days',base:'Not tracked',target:'<5 open at any time',freq:'Quarterly GRM report',cat:'incl',catlbl:'Social inclusion'},
+ {name:'Oleh–Olomoro dispute milestones on schedule',base:'0%',target:'100% adherence',freq:'MD monthly report',cat:'gov',catlbl:'Governance'},
+ {name:'Mean disease burden per respondent',base:'4.69 · Oleh 6.33',target:'<4.0 by Year 3',freq:'Annual health survey',cat:'health',catlbl:'Community health'},
+ {name:'Households eating 3 meals/day — Emeragha',base:'17.4%',target:'≥25% by Year 3',freq:'Annual household survey',cat:'food',catlbl:'Food security'},
+];
+
+const RECS=[
+ {icon:'ti-bulb',title:'Strategic — for HEOSL',sub:'Set the posture of the whole programme',items:[
+  {t:'Reframe the community relationship as social value creation, not compliance.',d:'98.1% of households still hope for positive outcomes. Trust is at a critical low in Oleh, Olomoro and Emeragha — it can be built or rapidly eroded.'},
+  {t:'Treat vulnerability as a design constraint, not a reporting category.',d:'The 63% vulnerability rate must shape every HCDT design, employment programme and engagement channel.'},
+  {t:'Invest in gender inclusion proportionate to the exclusion documented.',d:'Women are 69% of the lowest income bracket, ~0% of oil-company employment, and 25.7pp less project-aware than men. A token 10% target is insufficient.'},
+  {t:'Make the HCDT a genuine development institution.',d:'It needs governance independent of HEOSL operations, evidence-based allocation, and conflict-sensitive distribution.'},
+ ]},
+ {icon:'ti-settings',title:'Operational — for HEOSL',sub:'Concrete actions for the operating team',items:[
+  {t:'Place a resident senior Community Relations Manager inside the OML 30 area.',d:'Not based in a distant headquarters.'},
+  {t:'Adopt a 30-day contractor-payment standard with zero tolerance on arrears.',d:'The most direct, credible trust-building signal available.'},
+  {t:'Commission a Gender-Based Violence risk assessment before workforce mobilisation.',d:'Using the survivor-centred World Bank GPN methodology.'},
+  {t:'Initiate a Gas-Flare Reduction Action Plan.',d:'In engagement with the Nigerian Gas Flare Commercialisation Programme, prioritising Oleh, Olomoro and Uzere.'},
+  {t:'Adopt proactive EIA/HSIA disclosure to all host communities.',d:'Treat documentation sharing as relationship-building, not a regulatory minimum.'},
+ ]},
+ {icon:'ti-scale',title:'For HCDT trustees',sub:'Governance of the development trust',items:[
+  {t:'Adopt the Cross-Community Priority Ranking as the Year 1 allocation basis.',d:'Eriemu, Olomoro and Oleh designated as Priority 1.'},
+  {t:'Establish an independent Board Chair before the first disbursement.',d:'So decisions are, and are seen to be, free of HEOSL operational influence.'},
+  {t:'Require gender-disaggregated reporting for all funded programmes.',d:'Employment, scholarships and facility utilisation, by sex.'},
+  {t:'Commission a community-level HCDT audit in Year 2.',d:'Examining whether investment reaches Priority 1 communities and the 336 vulnerable households.'},
+ ]},
+ {icon:'ti-building-bank',title:'For regulators',sub:'NUPRC · FMEnv · Delta State',items:[
+  {t:'NUPRC — make the quarterly SIMP Action Tracker a licence condition.',d:'With a defined non-compliance response protocol for any significant mitigation missed against its timeline.'},
+  {t:'NUPRC — independently review the Oleh–Olomoro dispute documentation.',d:'Including original SPDC/NNPC landowner payment lists — a Tier 1 PIA §257 risk.'},
+  {t:'FMEnv — use the disease-burden baseline as the reference document.',d:'To prevent misattribution of pre-existing conditions to HEOSL operations.'},
+  {t:'Delta State Ministry of Health — engage the CHMP as a complement, not a substitute.',d:'National Health Act 2014 obligations of state and local government remain intact.'},
+ ]},
+];
+
+/* ---------- STATE & STORAGE ---------- */
+const STORE_KEY='heosl_hsia_tracker_v1';
+const DEFAULT_START='2026-05-01';
+let state={start:DEFAULT_START, theme:'auto', items:{}};
+let storageOK=false;
+
+async function loadState(){
+  try{
+    if(typeof window.storage==='undefined') return;
+    const r=await window.storage.get(STORE_KEY);
+    storageOK=true;
+    if(r&&r.value){ const s=JSON.parse(r.value); state=Object.assign(state,s); state.items=s.items||{}; }
+  }catch(e){ /* key may not exist yet, or storage unavailable */ }
+}
+let saveTimer=null;
+function saveState(){
+  setSaveTag('saving');
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(async()=>{
+    try{
+      if(typeof window.storage==='undefined') throw 0;
+      await window.storage.set(STORE_KEY, JSON.stringify(state));
+      storageOK=true; setSaveTag('saved');
+    }catch(e){ setSaveTag('session'); }
+  },150);
+}
+function setSaveTag(mode){
+  const t=document.getElementById('savetag'); if(!t)return;
+  if(mode==='saving'){t.innerHTML='<span class="savedot" style="background:var(--warn)"></span>Saving…';}
+  else if(mode==='session'){t.innerHTML='<span class="savedot" style="background:var(--hint)"></span>Session only';}
+  else{t.innerHTML='<span class="savedot"></span>Saved';}
+}
+function itemState(id){ return state.items[id]||{done:false,ev:''}; }
+
+/* ---------- HELPERS ---------- */
+function dueDateOf(c){ const d=new Date(state.start+'T00:00:00'); d.setDate(d.getDate()+c.due); return d; }
+function fmtDate(d){ return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); }
+function daysLeft(c){ const ms=dueDateOf(c)-new Date(); return Math.ceil(ms/86400000); }
+function statusOf(c){
+  const s=itemState(c.id);
+  if(s.done) return {key:'done',label:'Complete',cls:'b-done'};
+  const dl=daysLeft(c);
+  if(dl<0) return {key:'over',label:'Overdue '+Math.abs(dl)+'d',cls:'b-over'};
+  if(dl<=30) return {key:'warn',label:'Due in '+dl+'d',cls:'b-warn'};
+  return {key:'prog',label:'On track',cls:'b-prog'};
+}
+function commitsFor(cid){ return COMMITMENTS.filter(c=>c.comm.includes(cid)); }
+function asksFor(cid){ return ASKS.filter(a=>a.comm.includes(cid)); }
+function totals(){
+  const total=COMMITMENTS.length;
+  let done=0,over=0,warn=0;
+  COMMITMENTS.forEach(c=>{const st=statusOf(c); if(st.key==='done')done++; else if(st.key==='over')over++; else if(st.key==='warn')warn++;});
+  return {total,done,over,warn,prog:total-done-over-warn,pct:Math.round(done/total*100)};
+}
+function communityProgress(cid){
+  const cs=commitsFor(cid); let done=0,over=0;
+  cs.forEach(c=>{const st=statusOf(c); if(st.key==='done')done++; if(st.key==='over')over++;});
+  return {total:cs.length,done,over,pct:cs.length?Math.round(done/cs.length*100):0};
+}
+function esc(s){return (s+'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
+
+/* ---------- VIEWS ---------- */
+let view={name:'summary',param:null};
+const app=()=>document.getElementById('app');
+
+function render(){
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===view.name));
+  if(view.name==='summary')renderSummary();
+  else if(view.name==='communities')renderCommunities();
+  else if(view.name==='community')renderCommunity(view.param);
+  else if(view.name==='asks')renderRecs();
+  else if(view.name==='kpis')renderKpis();
+  window.scrollTo({top:0,behavior:'instant'});
+}
+
+function renderSummary(){
+  const t=totals();
+  const overdue=COMMITMENTS.filter(c=>statusOf(c).key==='over');
+  const cps=COMMITMENTS.filter(c=>c.cp);
+  const topKpis=KPIS.slice(0,4);
+  let h=`<div class="page">
+    <p class="ttl">Programme summary</p>
+    <p class="sub">Live status across all commitments made to the seven OML 30 host communities. Tick a commitment on its community page — evidence must be attached first — and totals here update automatically.</p>
+
+    <div class="startctl">
+      <i class="ti ti-calendar-event"></i>
+      <span>Assumed programme start (anchors all deadlines):</span>
+      <input type="date" id="startdate" value="${state.start}">
+      <button class="lnk resetbtn" id="resetstart">Reset to default</button>
+    </div>
+
+    <div class="cards">
+      <div class="metric"><div class="lbl">Total commitments</div><div class="val num">${t.total}</div></div>
+      <div class="metric"><div class="lbl">Completed</div><div class="val num">${t.pct}% <small>· ${t.done}</small></div></div>
+      <div class="metric"><div class="lbl">On track / upcoming</div><div class="val num">${t.prog+t.warn}</div></div>
+      <div class="metric ${t.over?'alert':''}"><div class="lbl">Overdue</div><div class="val num">${t.over}</div></div>
+    </div>`;
+
+  if(overdue.length){
+    h+=`<div class="banner"><i class="ti ti-alert-triangle"></i><div class="b-body">
+      <b>${overdue.length} commitment${overdue.length>1?'s':''} overdue.</b>
+      <ul>`+overdue.map(c=>`<li><span>${esc(c.title)}${c.cp?' <span class="cpflag">Condition precedent</span>':''}</span><span class="od">· due ${fmtDate(dueDateOf(c))}</span></li>`).join('')+`</ul>
+    </div></div>`;
+  }
+
+  h+=`<p class="eyebrow">Data provenance</p>
+    <div class="panel"><p class="phint" style="margin:0">Every commitment, community ranking, KPI and recommendation in this platform is drawn from the HSIA report. Of the ${COMMITMENTS.length} tracked commitments, <b>${COMMITMENTS.filter(c=>srcOf(c)==='tracker').length}</b> come verbatim from the SIMP Action Tracker (Table 73) — including their owner and required verification — marked <span class="srctag tracker"><i class="ti ti-circle-check" style="font-size:12px;vertical-align:-1px"></i> SIMP Tracker</span>. The other <b>${COMMITMENTS.filter(c=>srcOf(c)==='derived').length}</b> are actions the report commits to in the community-asks and mitigation tables (Tables 70–71); their owner is mapped to the report's SIMP governance roles (§11.2) and their verification is suggested, marked <span class="srctag derived"><i class="ti ti-info-circle" style="font-size:12px;vertical-align:-1px"></i> Derived</span>.</p></div>`;
+
+  h+=`<p class="eyebrow">Mandatory conditions precedent</p>
+    <div class="panel"><p class="phint">The five mandatory conditions precedent from Table 83 — non-negotiable actions that must be complete before any drilling or construction. Status reflects your ticks.</p><div class="cprow">`;
+  cps.forEach((c,i)=>{const st=statusOf(c);
+    h+=`<div class="cp"><div class="cpn">${i+1}</div><div class="cpt">${esc(c.title)}<small>${esc(c.owner)} · due ${fmtDate(dueDateOf(c))}</small></div><span class="badge ${st.cls}">${st.label}</span></div>`;});
+  h+=`</div></div>`;
+
+  h+=`<p class="eyebrow">Community breakdown — weighted by priority tier</p><div class="commbreak">`;
+  [...COMMUNITIES].forEach(c=>{const p=communityProgress(c.id);
+    h+=`<div class="cb" data-cid="${c.id}" role="button" tabindex="0">
+      <div><div class="cbhead">${esc(c.name)} <span class="tier t${c.tier}">Priority ${c.tier}</span></div>
+        <div class="cbmeta"><span>${p.done} of ${p.total} complete</span><span>·</span><span>${c.vuln}% vulnerable</span></div>
+        <div class="bar"><span style="width:${p.pct}%"></span></div>
+        ${p.over?`<span class="odpill">${p.over} overdue</span>`:''}</div>
+      <div class="pct num">${p.pct}%</div></div>`;});
+  h+=`</div>`;
+
+  h+=`<p class="eyebrow">Key performance indicators</p><div class="kpicards">`;
+  topKpis.forEach(k=>{h+=kpiCard(k);});
+  h+=`</div><div style="margin-top:12px"><button class="btn ghost" id="allkpis">View all ${KPIS.length} indicators →</button></div>`;
+
+  h+=`</div>`;
+  app().innerHTML=h;
+
+  document.getElementById('startdate').addEventListener('change',e=>{state.start=e.target.value||DEFAULT_START;saveState();render();});
+  document.getElementById('resetstart').addEventListener('click',()=>{state.start=DEFAULT_START;saveState();render();});
+  document.getElementById('allkpis').addEventListener('click',()=>{go('kpis');});
+  document.querySelectorAll('.cb').forEach(el=>{
+    const open=()=>go('community',el.dataset.cid);
+    el.addEventListener('click',open);
+    el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}});
+  });
+}
+
+function renderCommunities(){
+  let h=`<div class="page"><p class="ttl">Communities</p>
+    <p class="sub">Seven host communities, ranked by composite risk (WASH, disease burden, vulnerability and livelihood/conflict). Priority 1 communities receive the highest per-capita HCDT allocation and earliest sequencing. Select a community to manage its commitments.</p>
+    <div class="commbreak">`;
+  COMMUNITIES.forEach(c=>{const p=communityProgress(c.id);
+    h+=`<div class="cb" data-cid="${c.id}" role="button" tabindex="0">
+      <div><div class="cbhead">${esc(c.name)} <span class="tier t${c.tier}">Priority ${c.tier}</span></div>
+        <div class="cbmeta"><span class="chip ${riskCls(c.wash)}">WASH ${c.wash.toLowerCase()}</span><span class="chip ${riskCls(c.disease)}">disease ${c.disease.toLowerCase()}</span><span class="chip">${c.vuln}% vulnerable</span><span class="chip ${riskCls(c.livelihood)}">livelihood ${c.livelihood.toLowerCase()}</span></div>
+        <div class="bar"><span style="width:${p.pct}%"></span></div>
+        ${p.over?`<span class="odpill">${p.over} overdue</span>`:''}</div>
+      <div class="pct num">${p.pct}%</div></div>`;});
+  h+=`</div></div>`;
+  app().innerHTML=h;
+  document.querySelectorAll('.cb').forEach(el=>{
+    const open=()=>go('community',el.dataset.cid);
+    el.addEventListener('click',open);
+    el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}});
+  });
+}
+function riskCls(v){v=v.toLowerCase();if(v.indexOf('critical')>=0)return'crit';if(v.indexOf('high')>=0)return'high';return'med';}
+
+function renderCommunity(cid){
+  const c=COMMUNITIES.find(x=>x.id===cid); if(!c){go('communities');return;}
+  const p=communityProgress(cid);
+  const cs=commitsFor(cid);
+  const aks=asksFor(cid).sort((a,b)=>(b.imp-b.eff)-(a.imp-a.eff));
+  const circ=2*Math.PI*26, off=circ*(1-p.pct/100);
+
+  let h=`<div class="page">
+    <button class="backlink" id="back"><i class="ti ti-arrow-left"></i> All communities</button>
+    <div class="detailhead">
+      <div>
+        <div class="dh-name"><h2>${esc(c.name)}</h2><span class="tier t${c.tier}">Priority ${c.tier}</span></div>
+        <div class="chiprow">
+          <span class="chip ${riskCls(c.wash)}">WASH: ${c.wash.toLowerCase()}</span>
+          <span class="chip ${riskCls(c.disease)}">disease burden: ${c.disease.toLowerCase()}</span>
+          <span class="chip">${c.vuln}% vulnerable</span>
+          <span class="chip ${riskCls(c.livelihood)}">livelihood: ${c.livelihood.toLowerCase()}</span>
+        </div>
+      </div>
+      <div class="ring">
+        <div class="ringwrap"><svg width="62" height="62" viewBox="0 0 62 62">
+          <circle cx="31" cy="31" r="26" fill="none" stroke="var(--line)" stroke-width="6"/>
+          <circle cx="31" cy="31" r="26" fill="none" stroke="var(--brand)" stroke-width="6" stroke-linecap="round"
+            stroke-dasharray="${circ.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" transform="rotate(-90 31 31)"/>
+        </svg><div class="ringtxt">${p.pct}%<small>DONE</small></div></div>
+        <div style="font-size:13px;color:var(--muted)">${p.done} of ${p.total}<br>complete${p.over?`<br><span style="color:var(--over)">${p.over} overdue</span>`:''}</div>
+      </div>
+    </div>
+
+    <p class="eyebrow">What HEOSL committed to do</p>
+    <div class="panel"><p class="phint">Tick to mark a commitment complete. You must attach verification evidence first — this mirrors the SIMP Action Tracker’s evidence requirement.</p>`;
+  cs.forEach(c2=>{h+=commitRow(c2);});
+  h+=`</div>`;
+
+  h+=`<p class="eyebrow">What the community is asking</p>
+    <div class="panel"><p class="phint">Community asks plotted by impact against delivery effort, to guide prioritisation. Red points are mandatory / conditions precedent.</p>`;
+  if(aks.length){
+    h+=`<div class="plot">
+      <span class="axl" style="left:-66px;top:-6px">high impact</span>
+      <span class="axl" style="left:-66px;bottom:-6px">low impact</span>
+      <span class="axl" style="left:0;bottom:-22px">low effort</span>
+      <span class="axl" style="right:0;bottom:-22px">high effort</span>
+      <div class="mid-v"></div><div class="mid-h"></div>
+      <span class="quad" style="left:6px;top:6px;color:var(--done)">quick wins</span>
+      <span class="quad" style="right:6px;top:6px;color:var(--warn)">major projects</span>`;
+    aks.forEach(a=>{const x=8+(a.eff-1)/9*84, y=8+(10-a.imp)/9*84;
+      h+=`<div class="dot" style="left:${x.toFixed(1)}%;top:${y.toFixed(1)}%" title="${esc(a.label)} — impact ${a.imp}/10, effort ${a.eff}/10"><span class="pt ${a.mand?'mand':''}"></span><span class="lab">${esc(a.label.split(' ').slice(0,2).join(' '))}</span></div>`;});
+    h+=`</div>`;
+    h+=`<div class="asklist">`;
+    aks.forEach(a=>{h+=`<div class="askrow"><span class="sco">impact ${a.imp} · effort ${a.eff}</span><span class="akt">${esc(a.label)}</span>${a.mand?'<span class="mand">mandatory</span>':''}</div>`;});
+    h+=`</div>`;
+  }else{ h+=`<p class="phint" style="margin:0">No community-specific asks recorded beyond the programme-wide commitments above.</p>`; }
+  h+=`</div></div>`;
+
+  app().innerHTML=h;
+  document.getElementById('back').addEventListener('click',()=>go('communities'));
+  wireCommits();
+}
+
+function commitRow(c){
+  const s=itemState(c.id); const st=statusOf(c); const hasEv=s.ev&&s.ev.trim().length>0;
+  let h=`<div class="commit ${st.key==='done'?'done':''} ${st.key==='over'?'over':''}" data-id="${c.id}">
+    <div class="commit-top">
+      <input type="checkbox" class="cx" ${s.done?'checked':''} ${hasEv?'':'disabled'} aria-label="Mark complete: ${esc(c.title)}">
+      <div class="ct">
+        <div class="ctitle">${esc(c.title)}</div>
+        <div class="cmeta">${c.cp?'<span class="cpflag">Condition precedent</span>':''}
+          <span>${esc(c.owner)}</span><span class="sep">·</span><span>due ${fmtDate(dueDateOf(c))} (${esc(c.dueLabel)})</span>
+          <span class="sep">·</span><span class="mono">${esc(c.std)}</span><span class="sep">·</span><span class="srctag ${srcOf(c)}" title="${srcOf(c)==='tracker'?'Verbatim from the SIMP Action Tracker (Table 73)':'Action from the community-asks/mitigation tables (Table 70/71); owner and verification reasoned from the SIMP governance roles'}">${srcOf(c)==='tracker'?'<i class="ti ti-circle-check" style="font-size:12px;vertical-align:-1px"></i> SIMP Tracker':'<i class="ti ti-info-circle" style="font-size:12px;vertical-align:-1px"></i> Derived §'+esc(c.ref)}</span></div>
+      </div>
+      <span class="badge ${st.cls}">${st.label}</span>
+    </div>
+    <div class="evbox">`;
+  if(hasEv){
+    h+=`<div class="evhas"><i class="ti ti-paperclip"></i><div class="evtext"><b>Evidence attached</b>${esc(s.ev)}</div>
+      <button class="lnk editev" data-id="${c.id}">edit</button></div>`;
+  }else{
+    h+=`<div class="evgate"><i class="ti ti-lock"></i> Evidence required before this can be marked complete</div>
+      <div style="margin-top:8px"><button class="btn addev" data-id="${c.id}"><i class="ti ti-plus" style="font-size:13px;vertical-align:-1px"></i> Add evidence</button></div>`;
+  }
+  h+=`</div></div>`;
+  return h;
+}
+
+function wireCommits(){
+  document.querySelectorAll('.commit .cx').forEach(cb=>{
+    cb.addEventListener('change',e=>{
+      const id=cb.closest('.commit').dataset.id; const s=itemState(id);
+      if(cb.checked && !(s.ev&&s.ev.trim())){ cb.checked=false; flashGate(id); return; }
+      state.items[id]=Object.assign({ev:''},s,{done:cb.checked}); saveState(); render();
+    });
+  });
+  document.querySelectorAll('.addev,.editev').forEach(b=>{
+    b.addEventListener('click',()=>openEvEditor(b.dataset.id));
+  });
+}
+function flashGate(id){
+  const row=document.querySelector(`.commit[data-id="${id}"]`); if(!row)return;
+  const g=row.querySelector('.evgate'); if(g){g.style.background='var(--over)';g.style.color='#fff';
+    setTimeout(()=>{g.style.background='var(--over-bg)';g.style.color='var(--over)';},900);} 
+  const addbtn=row.querySelector('.addev'); if(addbtn)addbtn.focus();
+}
+function openEvEditor(id){
+  const c=COMMITMENTS.find(x=>x.id===id); const s=itemState(id);
+  const row=document.querySelector(`.commit[data-id="${id}"]`); if(!row)return;
+  const box=row.querySelector('.evbox');
+  box.innerHTML=`<div class="evedit">
+    <p class="req">${srcOf(c)==='tracker'?'Required verification (SIMP Action Tracker, Table 73): ':'Suggested verification: '}${esc(c.ev)}</p>
+    <textarea id="ev_${id}" placeholder="Record the evidence — document name, date, reference…">${esc(s.ev||'')}</textarea>
+    <div class="btnrow"><button class="btn primary" id="evsave_${id}">Save evidence</button><button class="btn ghost" id="evcancel_${id}">Cancel</button></div>
+  </div>`;
+  const ta=document.getElementById('ev_'+id); ta.focus();
+  document.getElementById('evsave_'+id).addEventListener('click',()=>{
+    const v=ta.value.trim();
+    state.items[id]=Object.assign({done:false},s,{ev:v}); saveState(); render();
+  });
+  document.getElementById('evcancel_'+id).addEventListener('click',()=>render());
+}
+
+function renderRecs(){
+  let h=`<div class="page"><p class="ttl">Recommendations</p>
+    <p class="sub">General recommendations from the HSIA, grouped by the party responsible for acting on them. These set the direction within which the tracked commitments sit.</p>`;
+  RECS.forEach(g=>{
+    h+=`<div class="panel reccol"><div class="recgrouptitle"><div class="ricon"><i class="ti ${g.icon}"></i></div><div><h3>${esc(g.title)}</h3><p>${esc(g.sub)}</p></div></div>`;
+    g.items.forEach((it,i)=>{h+=`<div class="recitem"><div class="rn">${String(i+1).padStart(2,'0')}</div><div class="rt"><b>${esc(it.t)}</b><p>${esc(it.d)}</p></div></div>`;});
+    h+=`</div>`;
+  });
+  h+=`</div>`;
+  app().innerHTML=h;
+}
+
+function kpiCard(k){
+  return `<div class="kpi"><span class="kcat kc-${k.cat}">${esc(k.catlbl)}</span>
+    <div class="kname">${esc(k.name)}</div>
+    <div class="kvals"><span class="kbase">${esc(k.base)}</span><i class="ti ti-arrow-right" style="color:var(--hint)"></i><span class="ktarget">${esc(k.target)}</span></div>
+    <div class="kfreq"><i class="ti ti-repeat" style="font-size:12px;vertical-align:-1px"></i> ${esc(k.freq)}</div></div>`;
+}
+function renderKpis(){
+  let h=`<div class="page"><p class="ttl">Key performance indicators</p>
+    <p class="sub">The eleven monitoring indicators that measure whether commitments translate into outcomes. Each shows the survey baseline, the target, the indicator it tracks, and how often it is measured.</p>
+    <div class="kpicards">`;
+  KPIS.forEach(k=>{h+=kpiCard(k);});
+  h+=`</div></div>`;
+  app().innerHTML=h;
+}
+
+/* ---------- NAV ---------- */
+function go(name,param){ view={name,param:param||null}; render(); }
+document.querySelectorAll('#nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.view)));
+
+/* ---------- THEME ---------- */
+function applyTheme(){
+  const root=document.documentElement;
+  if(state.theme==='auto'){root.removeAttribute('data-theme');}
+  else root.setAttribute('data-theme',state.theme);
+  const ic=document.querySelector('#themebtn i');
+  const dark = state.theme==='dark' || (state.theme==='auto' && matchMedia('(prefers-color-scheme: dark)').matches);
+  ic.className = dark? 'ti ti-sun':'ti ti-moon';
+}
+document.getElementById('themebtn').addEventListener('click',()=>{
+  state.theme = state.theme==='dark'?'light':(state.theme==='light'?'auto':'dark');
+  applyTheme(); saveState();
+});
+
+/* ---------- BOOT ---------- */
+(async function(){
+  await loadState();
+  applyTheme();
+  setSaveTag(storageOK?'saved':'session');
+  render();
+})();
+</script>
