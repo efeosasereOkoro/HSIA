@@ -47,6 +47,9 @@ _Last updated: 2026-06-16_
   livelihood); per-community progress ring and commitments.
 - Community asks grouped by **impact-vs-effort quadrant**: Quick wins /
   Long-term planning / Consider / Don't do (replaced the scatter matrix).
+- **Community asks are now trackable** — each ask has the same checkbox +
+  evidence-gate + completion-date flow as commitments (mark *Addressed* once
+  evidence is attached). Tracked independently of commitments.
 
 ### Data integrity
 - **Set-once programme-start date** — locked by default, changed via an explicit

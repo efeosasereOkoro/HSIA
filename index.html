@@ -250,6 +250,7 @@
   .askrow .sco{font-size:11px;color:var(--muted);white-space:nowrap}
   .askrow .akt{flex:1;font-size:13.5px}
   .askrow .mand{font-size:10px;color:var(--over);font-weight:600}
+  .cmeta .mand{color:var(--over);font-weight:600}
 
   .reccol{margin-bottom:14px}
   .recgrouptitle{display:flex;align-items:center;gap:9px;margin:0 0 10px}
@@ -876,14 +877,14 @@ function renderCommunity(cid){
     {label:'Don’t do', desc:'Low impact · high effort — deprioritise', icon:'ti-circle-minus', cls:'q-dont', test:a=>a.imp<=5&&a.eff>=6},
   ];
   h+=`<p class="eyebrow">What the community is asking</p>
-    <div class="panel"><p class="phint">Community asks grouped by an impact-versus-effort prioritisation. Mandatory actions and conditions precedent are flagged.</p>`;
+    <div class="panel"><p class="phint">Community asks grouped by an impact-versus-effort prioritisation. Tick an ask once HEOSL has addressed it — evidence is required first. Mandatory actions / conditions precedent are flagged.</p>`;
   if(aks.length){
     QUAD.forEach(q=>{
       const items=aks.filter(q.test);
       if(!items.length)return;
-      h+=`<div class="qgroup"><div class="qhead ${q.cls}"><span class="qic"><i class="ti ${q.icon}"></i></span><div><h4>${q.label}</h4><p>${q.desc}</p></div><span class="qcount">${items.length}</span></div><div class="asklist">`;
-      items.forEach(a=>{h+=`<div class="askrow"><span class="sco">impact ${a.imp} · effort ${a.eff}</span><span class="akt">${esc(a.label)}</span>${a.mand?'<span class="mand">mandatory</span>':''}</div>`;});
-      h+=`</div></div>`;
+      h+=`<div class="qgroup"><div class="qhead ${q.cls}"><span class="qic"><i class="ti ${q.icon}"></i></span><div><h4>${q.label}</h4><p>${q.desc}</p></div><span class="qcount">${items.length}</span></div>`;
+      items.forEach(a=>{h+=askRow(a);});
+      h+=`</div>`;
     });
   }else{ h+=`<p class="phint" style="margin:0">No community-specific asks recorded beyond the programme-wide commitments above.</p>`; }
   h+=`</div></div>`;
@@ -891,6 +892,7 @@ function renderCommunity(cid){
   app().innerHTML=h;
   document.getElementById('back').addEventListener('click',()=>go('communities'));
   wireCommits();
+  wireAsks();
 }
 
 function commitRow(c){
@@ -920,7 +922,7 @@ function commitRow(c){
 }
 
 function wireCommits(){
-  document.querySelectorAll('.commit .cx').forEach(cb=>{
+  document.querySelectorAll('.commit[data-id] .cx').forEach(cb=>{
     cb.addEventListener('change',e=>{
       const id=cb.closest('.commit').dataset.id; const s=itemState(id);
       if(cb.checked && !(s.ev&&s.ev.trim())){ cb.checked=false; flashGate(id); return; }
@@ -952,6 +954,64 @@ function openEvEditor(id){
     state.items[id]=Object.assign({done:false},s,{ev:v}); saveState(); render();
   });
   document.getElementById('evcancel_'+id).addEventListener('click',()=>render());
+}
+
+/* ---------- COMMUNITY ASKS (tracking) ---------- */
+function askRow(a){
+  const s=itemState(a.id); const done=!!s.done; const hasEv=s.ev&&s.ev.trim().length>0;
+  let h=`<div class="commit askitem ${done?'done':''}" data-askid="${a.id}">
+    <div class="commit-top">
+      <input type="checkbox" class="cx" ${done?'checked':''} ${hasEv?'':'disabled'} aria-label="Mark addressed: ${esc(a.label)}">
+      <div class="ct">
+        <div class="ctitle">${esc(a.label)}</div>
+        <div class="cmeta"><span>impact ${a.imp} · effort ${a.eff}</span>${a.mand?'<span class="sep">·</span><span class="mand">mandatory</span>':''}${done&&s.doneDate?`<span class="sep">·</span><span style="color:var(--done)"><i class="ti ti-check" style="font-size:12px;vertical-align:-1px"></i> addressed ${fmtDate(new Date(s.doneDate+'T00:00:00'))}</span>`:''}</div>
+      </div>
+      <span class="badge ${done?'b-done':'b-prog'}">${done?'Addressed':'Open'}</span>
+    </div>
+    <div class="evbox">`;
+  if(hasEv){
+    h+=`<div class="evhas"><i class="ti ti-paperclip"></i><div class="evtext"><b>Evidence attached</b>${esc(s.ev)}</div>
+      <button class="lnk editaskev" data-id="${a.id}">edit</button></div>`;
+  }else{
+    h+=`<div class="evgate"><i class="ti ti-lock"></i> Evidence required before this can be marked addressed</div>
+      <div style="margin-top:8px"><button class="btn addaskev" data-id="${a.id}"><i class="ti ti-plus" style="font-size:13px;vertical-align:-1px"></i> Add evidence</button></div>`;
+  }
+  h+=`</div></div>`;
+  return h;
+}
+function wireAsks(){
+  document.querySelectorAll('.commit[data-askid] .cx').forEach(cb=>{
+    cb.addEventListener('change',()=>{
+      const id=cb.closest('.commit').dataset.askid; const s=itemState(id);
+      if(cb.checked && !(s.ev&&s.ev.trim())){ cb.checked=false; flashGateAsk(id); return; }
+      state.items[id]=Object.assign({ev:''},s,{done:cb.checked,doneDate:cb.checked?(s.doneDate||todayISO()):''}); saveState(); render();
+    });
+  });
+  document.querySelectorAll('.addaskev,.editaskev').forEach(b=>{
+    b.addEventListener('click',()=>openAskEv(b.dataset.id));
+  });
+}
+function flashGateAsk(id){
+  const row=document.querySelector(`.commit[data-askid="${id}"]`); if(!row)return;
+  const g=row.querySelector('.evgate'); if(g){g.style.background='var(--over)';g.style.color='#fff';
+    setTimeout(()=>{g.style.background='var(--over-bg)';g.style.color='var(--over)';},900);}
+  const addbtn=row.querySelector('.addaskev'); if(addbtn)addbtn.focus();
+}
+function openAskEv(id){
+  const s=itemState(id);
+  const row=document.querySelector(`.commit[data-askid="${id}"]`); if(!row)return;
+  const box=row.querySelector('.evbox');
+  box.innerHTML=`<div class="evedit">
+    <p class="req">Record what HEOSL has done to address this community ask — document, decision, date or reference.</p>
+    <textarea id="aev_${id}" placeholder="Evidence — what was done, when, reference…">${esc(s.ev||'')}</textarea>
+    <div class="btnrow"><button class="btn primary" id="aevsave_${id}">Save evidence</button><button class="btn ghost" id="aevcancel_${id}">Cancel</button></div>
+  </div>`;
+  const ta=document.getElementById('aev_'+id); ta.focus();
+  document.getElementById('aevsave_'+id).addEventListener('click',()=>{
+    const v=ta.value.trim();
+    state.items[id]=Object.assign({done:false},s,{ev:v}); saveState(); render();
+  });
+  document.getElementById('aevcancel_'+id).addEventListener('click',()=>render());
 }
 
 function renderRecs(){
