@@ -284,6 +284,7 @@
   .kpitag{font-size:10.5px;font-weight:600;border:none;cursor:pointer;padding:3px 9px;border-radius:99px;display:inline-flex;align-items:center;gap:5px;font-family:inherit;line-height:1.4}
   .kpitag i{opacity:.8}
   .kpitag:hover{filter:brightness(.96);text-decoration:underline;text-underline-offset:2px}
+  .kpinone{font-size:10.5px;font-weight:500;color:var(--hint);background:var(--bg);border:1px dashed var(--line2);padding:3px 9px;border-radius:99px;display:inline-flex;align-items:center;gap:5px}
   .klink{font-size:11px;color:var(--muted);margin-top:11px;padding-top:9px;border-top:1px solid var(--line);display:flex;align-items:center;gap:6px}
   .kpi-hl{outline:2px solid var(--brand);outline-offset:2px;box-shadow:var(--shadow-lg);transition:outline .2s,box-shadow .2s}
 
@@ -561,7 +562,8 @@ const KPIS=[
 const KPI_BY_ID={}; KPIS.forEach(k=>{KPI_BY_ID[k.id]=k;});
 // Which KPI(s) each commitment advances (verified against the report; see ROADMAP)
 const COMMIT_KPI={
- arrears:['payment_delays'], mediation:['dispute'], healthinvest:['disease_burden'],
+ arrears:['payment_delays'], disclose:['grm','women_aware'], mediation:['dispute'],
+ healthinvest:['disease_burden'], seash:['grievances'], employquota:['female_wf'],
  healthfund:['antimalarial','disease_burden'], wash62:['sanitation'], borehole:['wash_eriemu'],
  genderemploy:['female_wf'], gasflare:['disease_burden'], olehhc:['disease_burden'],
  olomohosp:['disease_burden'], cookfuel:['disease_burden','meals']
@@ -573,13 +575,14 @@ const REC_KPI={
  'Adopt a 30-day contractor-payment standard with zero tolerance on arrears.':['payment_delays'],
  'Initiate a Gas-Flare Reduction Action Plan.':['disease_burden'],
  'Adopt proactive EIA/HSIA disclosure to all host communities.':['women_aware','grm'],
+ 'Commission a Gender-Based Violence risk assessment before workforce mobilisation.':['grievances'],
  'Require gender-disaggregated reporting for all funded programmes.':['female_wf','women_aware'],
  'NUPRC — independently review the Oleh–Olomoro dispute documentation.':['dispute'],
  'FMEnv — use the disease-burden baseline as the reference document.':['disease_burden'],
  'Delta State Ministry of Health — engage the CHMP as a complement, not a substitute.':['antimalarial']
 };
 function kpiTags(ids){
- if(!ids||!ids.length)return '';
+ if(!ids||!ids.length)return `<div class="kpitags"><span class="kpinone" title="No performance indicator in the report directly measures this item"><i class="ti ti-minus" style="font-size:11px"></i> No linked KPI</span></div>`;
  return `<div class="kpitags">`+ids.map(id=>{const k=KPI_BY_ID[id];return k?`<button class="kpitag kc-${k.cat}" data-kpi="${id}" title="Linked KPI — ${esc(k.name)}"><i class="ti ti-chart-dots-2" style="font-size:11px"></i> ${esc(k.short)}</button>`:'';}).join('')+`</div>`;
 }
 function kpiCommitCount(id){ return Object.keys(COMMIT_KPI).filter(cid=>COMMIT_KPI[cid].includes(id)).length; }

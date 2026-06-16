@@ -41,11 +41,12 @@ _Last updated: 2026-06-16_
   evidence is attached (mirrors the SIMP Tracker's evidence requirement).
 - Captured **completion date** shown on completed items.
 - **Provenance tags** — SIMP Tracker (verbatim) vs Derived, with table refs.
-- **KPI linkage tags** — related commitments and recommendations show a
-  category-coloured pill naming the KPI(s) they advance; clicking jumps to that
-  KPI (and highlights it). Each KPI card shows "advanced by N commitments" in
-  reverse. (This is the backlog "Recommendations → commitments linking" item,
-  extended to KPIs.)
+- **KPI linkage tags** — every commitment and recommendation shows its KPI
+  relationship: a category-coloured pill naming the KPI(s) it advances (click to
+  jump + highlight), or an explicit "No linked KPI" when nothing in the report
+  measures it (so gaps are deliberate, not accidental). Each KPI card shows
+  "advanced by N commitments" in reverse; all 11 KPIs have ≥1 driver. (Backlog
+  "Recommendations → commitments linking", extended to KPIs.)
 
 ### Communities
 - Seven communities ranked by composite risk (WASH, disease, vulnerability,
