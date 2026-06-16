@@ -56,6 +56,9 @@ _Last updated: 2026-06-16_
 - **Persistence** — artifact storage when available, else `localStorage`.
 - **Accessibility** — semantic headings, `aria-current` nav, donut `aria-label`,
   decorative bars hidden, global focus-visible styles.
+- **Responsive** — verified laptop / tablet / phone: sidebar collapses to a
+  horizontal bar (full labels on tablet, icon-only ≤760px with labels kept for
+  screen readers), 12-col dashboard stacks, no horizontal overflow at any width.
 
 ---
 
