@@ -73,56 +73,74 @@ _Last updated: 2026-06-16_
 
 ---
 
-## 🧭 Deferred — ideas we discussed but did NOT build for the MVP
+## 🧭 Backlog — prioritised
 
-Grouped roughly by how much they change the product. Each notes *why* it was held.
+Everything we've discussed but not yet built, ordered by priority.
 
-### Trust & verification (highest value, deferred on purpose)
-- **Independent verification tier.** Distinguish "HEOSL claims complete" from
-  "independently / community verified"; capture verifier identity + date; lock
-  verified records. _Why deferred:_ explicitly out of scope for the first demo;
-  self-attestation is acceptable to show the flow, not to be the system of record.
-- **Audit trail / change history.** Who changed what, when (beyond a single
-  completion date). _Why deferred:_ needs identity + a backend to be meaningful.
+**Legend:** effort `S` (hours) · `M` (a day or two) · `L` (multi-day) — `⛓ backend`
+marks items that need a server / identity and so cannot ship in the single file.
 
-### Multi-user / system-of-record
-- **Shared backend + authentication + roles.** Today every officer has their own
-  device-local copy — there is no shared source of truth. _Why deferred:_ needs a
-  server; the `localStorage` fallback makes the demo persist, but per-device only.
-- **Regulator (NUPRC) view** and **export** — generate the quarterly SIMP Action
-  Tracker / a defensible PDF snapshot. _Why deferred:_ depends on the backend and
-  the verification tier landing first.
+**How we prioritised:** (1) what most strengthens the HEOSL stakeholder demo and
+makes the tool *cover the SIMP*, and is buildable in-file → (2) operator utility,
+in-file → (3) structural "system-of-record" work that needs a backend →
+(4) the wider programme and polish.
 
-### Monitoring & outcomes
-- **Live KPIs.** Let users log dated readings against each indicator and show a
-  trend, instead of static baseline → target cards. _Why deferred:_ a feature
-  build, and over-scoped for a first demo; targets are also stated as text.
-- **Deadline reminders / escalation.** Notify owners as dates approach; an
-  escalation path when a condition precedent goes overdue. _Why deferred:_ needs
-  notifications infrastructure (and identity).
+### P0 — Next up (high value, in-file, no backend)
+- **Quarterly SIMP Action Tracker export (print / PDF).** `M` One click →
+  a regulator-ready report: every commitment's status, owner, evidence,
+  completion date, the CP gate and the KPI scorecard. The report (§16.6, Table 75)
+  calls for exactly this as a quarterly licence deliverable — turns the tool from
+  a tracker into the artefact NUPRC wants. Most persuasive single demo feature.
+- **Sample-data toggle.** `S` A "load example progress" switch so demos show a
+  healthy programme (evidence attached, items complete, gate cleared) instead of
+  the empty 0% / all-red first-run state.
+- **Grievance (GRM) log.** `M` Log → assign → resolve, with the >30-day-unresolved
+  flag. The GRM is a first-class SIMP element (Table 72 CR-Manager duty, Table 80
+  escalation pathway, and a dedicated KPI) and is currently absent — this makes
+  the platform cover the SIMP, not just the commitment list.
 
-### Service design (the wider programme, beyond HEOSL's internal tool)
-- **Community-facing accountability view** — a localised, low-bandwidth or
-  printable scorecard ("here's what was promised to Oleh, and the status") that
-  actually reaches a town hall. _Why deferred:_ a separate audience and surface;
-  the current tool is HEOSL-internal.
-- **Grievance / feedback loop** — a way for communities to confirm, dispute or
-  raise an issue against a commitment. _Why deferred:_ needs the public surface
-  and a backend.
-- **Recommendations → commitments linking** — thread each general recommendation
-  to the commitments that fulfil it. _Why deferred:_ content-modelling work, low
-  ROI for the demo.
+### P1 — High value, in-file
+- **Live KPIs + adaptive thresholds.** `M` Log dated readings per indicator with
+  a simple trend; surface Table 81's adaptive-management thresholds that trigger
+  action. The one *monitoring* section that currently doesn't monitor.
+- **Timeline / sequencing view.** `M` CPs and Year-1 deadlines on a horizontal
+  timeline anchored to the start date — turns the register into a plan and shows
+  bottlenecks/clustering at a glance.
+- **"My commitments" by-owner landing.** `S` Each officer (CR Manager, HSE, Local
+  Content, HCDT, MD) sees their own list first.
+- **Budget framework view.** `M` The ≥3%-of-opex commitment and prioritised cost
+  categories (§11.6, Table 76), tied to commitments.
+- **Evidence attachment.** `S` A filename/link field on evidence — a step closer
+  to real verification artefacts (full upload needs a backend).
 
-### Smaller polish ideas
-- Per-change timestamps surfaced in the UI.
-- Saved/named register filter views.
-- A compact "what's overdue this week" digest.
+### P2 — System-of-record (⛓ backend / identity; post-demo)
+- **Shared backend + authentication + roles.** `L ⛓` A real shared source of
+  truth — today every officer has a device-local copy. Unblocks most of the rest.
+- **Independent verification tier.** `M ⛓` Distinguish "HEOSL claims complete"
+  from "independently / community verified"; capture verifier identity + date;
+  lock verified records. (Deliberately deferred for the first demo.)
+- **Audit trail / change history.** `M ⛓` Who changed what, when — beyond the
+  single completion date.
+- **Deadline reminders / escalation.** `M ⛓` Notify owners as dates approach; an
+  escalation path when a condition precedent goes overdue.
+
+### P3 — Wider programme & polish
+- **Community-facing accountability scorecard.** `L` A localised, low-bandwidth /
+  printable "what was promised to your community, and the status" surface that
+  actually reaches a town hall. (Separate audience from the HEOSL-internal tool.)
+- **Public grievance / feedback loop.** `L ⛓` Extends the P0 GRM log so
+  communities can confirm, dispute or raise issues against a commitment.
+- **Recommendations → commitments linking.** `S` Thread each §16 recommendation
+  to the commitments that fulfil it.
+- **Saved / named register filter views.** `S`
+- **Per-change timestamps surfaced in the UI.** `S`
+- **"What's overdue this week" digest.** `S`
 
 ---
 
 ## How to use this doc
 
-When something moves from idea → built, cut it from **Deferred** and add it under
-**Implemented** with a one-line note. Update the _Last updated_ date. If a
-decision is reversed (e.g. we decide to add a backend), record the new direction
-here so the rationale isn't lost.
+When something moves from idea → built, cut it from the **Backlog** and add it
+under **Implemented** with a one-line note; bump the next P0 item up. Update the
+_Last updated_ date. If a decision is reversed (e.g. we decide to add a backend),
+record the new direction here so the rationale isn't lost.
