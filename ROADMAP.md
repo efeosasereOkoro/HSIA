@@ -49,6 +49,17 @@ _Last updated: 2026-06-16_
 - **Set-once programme-start date** — locked by default, changed via an explicit
   Adjust → Set flow with a "set on …" provenance stamp (so status can't be
   quietly edited green).
+- **Verified against the report (2026-06-16).** Communities (Table 69), all 14
+  SIMP-Tracker commitments (Table 73), the 8 derived commitments (Tables 70–71),
+  all 11 KPIs (Table 74) and the recommendations (§16.3–16.6) reconcile with the
+  source. Fixes applied: borehole targets trimmed to Eriemu + Emeragha (Table 73);
+  the Oleh health-centre ask flagged mandatory (Table 70 `[MANDATORY]`); SEA/SH
+  "(pre-drilling)" qualifier removed for consistency with the chosen CP source.
+- **Decision — conditions precedent source.** The report contradicts itself:
+  Table 83/§16.2 names the public-health investigation as the 5th CP; §1.6 and
+  Table 73's red rows name the SEA/SH action plan instead. **We follow Table 83**
+  (the explicit "Mandatory Conditions Precedent" table); a note in the footer
+  discloses the discrepancy. Revisit if Teasoo issues a corrected report.
 
 ### Craft
 - **Teasoo Consulting palette** (deep navy / steel-blue with a crimson accent),

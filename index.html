@@ -447,6 +447,7 @@
     <div class="wrap"><div id="app"></div>
   <div class="footer">
     Source: HEOSL Health &amp; Social Impact Assessment (Aferolow–Uzere New Field Development), prepared by Teasoo Consulting Limited, 2026. Commitments drawn from the SIMP Action Tracker (Table 73), Mitigation Measures (Table 71) and the community asks (Table 70); mandatory conditions precedent from Table 83. Community weighting from the Composite Priority Ranking (Table 69); KPIs verbatim from Table 74; recommendations from sections 16.3–16.6.<br>
+    Note on conditions precedent: the report is internally inconsistent — Table 83 (§16.2, “the full executive conditions precedent list”) names the independent public-health investigation as the fifth condition precedent, whereas the §1.6 summary and the red-shaded rows of Table 73 instead name the SEA/SH action plan. This platform follows Table 83.<br>
     Verified against the report: the 14 “SIMP Tracker” commitments reproduce the report’s owner and verification evidence exactly. The 8 “Derived” commitments reproduce the report’s action, target communities, standard and timeline; their responsible officer is mapped to the SIMP governance roles in §11.2 and their verification text is a suggested artifact, not report wording. Deadlines are computed from an assumed, editable programme-start date because the report states obligations as relative timeframes (e.g. “30 days”, “Year 1 Q1”). Impact and effort scores for community asks are working estimates derived from the Impact Significance Matrix (Table 68) and stated demand (Table 53) — a prioritisation aid, not findings from the report. Your ticks and evidence notes are saved to this device.
   </div>
     </div>
@@ -473,7 +474,7 @@ const COMMITMENTS=[
  {id:'healthinvest',title:'Commission independent public-health investigation',ref:'10.2B',due:60,dueLabel:'60 days',owner:'HSE Manager',ev:'Investigation report; findings disclosed to communities',std:'PS4',comm:['uzere','olomoro'],cp:true,cat:'Health'},
  {id:'vibration',title:'Structural assessment of vibration-damaged buildings',ref:'10.2F',due:60,dueLabel:'60 days',owner:'HSE Manager',ev:'Engineering report; compensation offers issued',std:'PS4; PS1',comm:['eriemu'],cp:false,cat:'Infrastructure'},
  {id:'heritage',title:'Cultural-heritage mapping (all communities)',ref:'10.2G',due:75,dueLabel:'Pre-construction',owner:'Community Relations Manager',ev:'Geo-referenced heritage map per community; CHMP completed',std:'PS8',comm:ALL,cp:true,cat:'Cultural'},
- {id:'seash',title:'Complete & approve SEA/SH action plan',ref:'10.2D',due:75,dueLabel:'Pre-construction (pre-drilling)',owner:'Community Relations Mgr + HSE',ev:'Approved plan; all worker codes of conduct signed',std:'PS1; PS4',comm:ALL,cp:false,cat:'Gender'},
+ {id:'seash',title:'Complete & approve SEA/SH action plan',ref:'10.2D',due:75,dueLabel:'Pre-construction',owner:'Community Relations Mgr + HSE',ev:'Approved plan; all worker codes of conduct signed',std:'PS1; PS4',comm:ALL,cp:false,cat:'Gender'},
  {id:'employquota',title:'Negotiate community employment-quota framework',ref:'10.2E',due:75,dueLabel:'Pre-construction',owner:'Local Content Officer',ev:'Signed framework documents per community',std:'PIA 257; PS2',comm:ALL,cp:false,cat:'Employment'},
  {id:'skills',title:'Launch Local Content Skills Development Programme',ref:'10.3',due:75,dueLabel:'Pre-construction',owner:'Local Content Officer',ev:'Programme operational; enrolment records',std:'PS2; PIA',comm:ALL,cp:false,cat:'Employment'},
  {id:'workhealth',title:'Approve Workforce Health Management Plan',ref:'10.3',due:75,dueLabel:'Pre-construction',owner:'HSE Manager',ev:'Approved plan; pre-deployment screening records',std:'PS4',comm:ALL,cp:false,cat:'Health'},
@@ -483,7 +484,7 @@ const COMMITMENTS=[
  {id:'olomohosp',title:'Commence Olomoro Central Hospital rehabilitation',ref:'10.2F',due:120,dueLabel:'Year 1 Q1',owner:'HCDT Board',ev:'Works contract signed; X-ray machine order placed',std:'PS4; PIA 251',comm:['olomoro'],cp:false,cat:'Infrastructure'},
  {id:'healthfund',title:'Establish Community Health Fund within HCDT',ref:'10.2B',due:120,dueLabel:'Year 1 Q1',owner:'HCDT Board',ev:'Fund established; drug-supplementation log',std:'PS4',comm:ALL,cp:false,cat:'Health'},
  {id:'wash62',title:'Eliminate toilet-over-water (62 households)',ref:'10.2C',due:330,dueLabel:'Year 1',owner:'Community Relations Manager',ev:'62 households confirmed with improved sanitation',std:'PS4',comm:ALL,cp:false,cat:'WASH'},
- {id:'borehole',title:'Deliver solar-borehole programme',ref:'10.2C',due:330,dueLabel:'Year 1',owner:'HCDT Board',ev:'Boreholes operational; water-quality test results confirmed',std:'PS4; PIA 251',comm:['eriemu','emeragha','otor'],cp:false,cat:'WASH'},
+ {id:'borehole',title:'Deliver solar-borehole programme',ref:'10.2C',due:330,dueLabel:'Year 1',owner:'HCDT Board',ev:'Boreholes operational; water-quality test results confirmed',std:'PS4; PIA 251',comm:['eriemu','emeragha'],cp:false,cat:'WASH'},
  {id:'cookfuel',title:'Cooking-fuel transition (LPG kits; solar ovens)',ref:'10.3',due:330,dueLabel:'Year 1',owner:'HCDT Board',ev:'LPG kit distribution log; household uptake survey',std:'PS4',comm:['eriemu','emeragha','uzere'],cp:false,cat:'WASH'},
  {id:'genderemploy',title:'Reach 20% female workforce in non-traditional roles',ref:'10.2D',due:330,dueLabel:'Year 1',owner:'Local Content Officer',ev:'Workforce-composition data; payroll gender analysis',std:'PS2',comm:ALL,cp:false,cat:'Gender'},
  {id:'roads',title:'Formalise road-maintenance SLA',ref:'10.2F',due:330,dueLabel:'Year 1',owner:'HSE / Community Relations Mgr',ev:'Signed SLA; defined response timeframes',std:'PS4',comm:ALL,cp:false,cat:'Infrastructure'},
@@ -499,7 +500,7 @@ const ASKS=[
  {id:'k_disclose',label:'Disclose HSIA & EIA documents',imp:8,eff:2,comm:['olomoro'],mand:true,cat:'Disclosure'},
  {id:'k_dispute',label:'Independent well-ownership dispute resolution',imp:9,eff:5,comm:['oleh','olomoro'],mand:true,cat:'Dispute'},
  {id:'k_heritage',label:'Community-led cultural-heritage mapping',imp:8,eff:5,comm:ALL,mand:true,cat:'Cultural'},
- {id:'k_olehhc',label:'Fulfil 2018 health-centre commitment',imp:9,eff:8,comm:['oleh'],mand:false,cat:'Infrastructure'},
+ {id:'k_olehhc',label:'Fulfil 2018 health-centre commitment',imp:9,eff:8,comm:['oleh'],mand:true,cat:'Infrastructure'},
  {id:'k_olomohosp',label:'Rehabilitate Olomoro Central Hospital',imp:9,eff:9,comm:['olomoro'],mand:false,cat:'Infrastructure'},
  {id:'k_healthinvest',label:'Public-health investigation (child deaths)',imp:8,eff:4,comm:['uzere','olomoro'],mand:false,cat:'Health'},
  {id:'k_gasflare',label:'Gas-flare health screening',imp:8,eff:6,comm:['oleh','olomoro','uzere','eriemu'],mand:false,cat:'Health'},
