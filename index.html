@@ -285,6 +285,20 @@
   .kpitag i{opacity:.8}
   .kpitag:hover{filter:brightness(.96);text-decoration:underline;text-underline-offset:2px}
   .kpinone{font-size:10.5px;font-weight:500;color:var(--hint);background:var(--bg);border:1px dashed var(--line2);padding:3px 9px;border-radius:99px;display:inline-flex;align-items:center;gap:5px}
+  .kc-none{background:var(--bg);color:var(--muted);border:1px dashed var(--line2)}
+  .krecs{margin-top:11px;padding-top:10px;border-top:1px solid var(--line)}
+  .krecs-h{font-size:10.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--hint);display:flex;align-items:center;gap:5px;margin-bottom:7px}
+  .krecs ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+  .krecs li{display:flex;gap:7px}
+  .krecs li::before{content:'';flex:none;width:5px;height:5px;border-radius:50%;background:var(--brand);margin-top:7px}
+  .krec{font:inherit;font-size:12px;line-height:1.4;text-align:left;background:none;border:none;color:var(--ink);cursor:pointer;padding:0}
+  .krec:hover{color:var(--brand);text-decoration:underline;text-underline-offset:2px}
+  .krecs-none{margin:0;font-size:12px;color:var(--hint)}
+  .untiedlist{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+  .untiedlist li{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;padding-bottom:10px;border-bottom:1px solid var(--line)}
+  .untiedlist li:last-child{border-bottom:none;padding-bottom:0}
+  .untied-grp{font-size:11px;color:var(--hint);background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:2px 9px;white-space:nowrap;margin-left:auto}
+  .rec-hl{outline:2px solid var(--brand);outline-offset:4px;border-radius:8px;transition:outline .2s}
   .klink{font-size:11px;color:var(--muted);margin-top:11px;padding-top:9px;border-top:1px solid var(--line);display:flex;align-items:center;gap:6px}
   .kpi-hl{outline:2px solid var(--brand);outline-offset:2px;box-shadow:var(--shadow-lg);transition:outline .2s,box-shadow .2s}
 
@@ -586,12 +600,14 @@ function kpiTags(ids){
  return `<div class="kpitags">`+ids.map(id=>{const k=KPI_BY_ID[id];return k?`<button class="kpitag kc-${k.cat}" data-kpi="${id}" title="Linked KPI — ${esc(k.name)}"><i class="ti ti-chart-dots-2" style="font-size:11px"></i> ${esc(k.short)}</button>`:'';}).join('')+`</div>`;
 }
 function kpiCommitCount(id){ return Object.keys(COMMIT_KPI).filter(cid=>COMMIT_KPI[cid].includes(id)).length; }
-let highlightKpi=null, kpiDelegated=false;
+function recsForKpi(id){ const out=[]; RECS.forEach(g=>g.items.forEach(it=>{const ks=REC_KPI[it.t]; if(ks&&ks.includes(id))out.push(it.t);})); return out; }
+function untiedRecs(){ const out=[]; RECS.forEach(g=>g.items.forEach(it=>{const ks=REC_KPI[it.t]; if(!ks||!ks.length)out.push({t:it.t,group:g.title});})); return out; }
+let highlightKpi=null, highlightRec=null, kpiDelegated=false;
 function wireKpiTags(){
   if(kpiDelegated)return; kpiDelegated=true;
   app().addEventListener('click',e=>{
-    const t=e.target.closest('.kpitag'); if(!t)return;
-    highlightKpi=t.dataset.kpi; go('kpis');
+    const t=e.target.closest('.kpitag'); if(t){ highlightKpi=t.dataset.kpi; go('kpis'); return; }
+    const r=e.target.closest('[data-recnav]'); if(r){ highlightRec=r.dataset.recnav; go('asks'); return; }
   });
 }
 
@@ -1064,21 +1080,36 @@ function renderRecs(){
     <p class="sub">General recommendations from the HSIA, grouped by the party responsible for acting on them. These set the direction within which the tracked commitments sit.</p>`;
   RECS.forEach(g=>{
     h+=`<div class="panel reccol"><div class="recgrouptitle"><div class="ricon"><i class="ti ${g.icon}"></i></div><div><h3>${esc(g.title)}</h3><p>${esc(g.sub)}</p></div></div>`;
-    g.items.forEach((it,i)=>{h+=`<div class="recitem"><div class="rn">${String(i+1).padStart(2,'0')}</div><div class="rt"><b>${esc(it.t)}</b><p>${esc(it.d)}</p>${kpiTags(REC_KPI[it.t])}</div></div>`;});
+    g.items.forEach((it,i)=>{h+=`<div class="recitem" data-rec="${esc(it.t)}"><div class="rn">${String(i+1).padStart(2,'0')}</div><div class="rt"><b>${esc(it.t)}</b><p>${esc(it.d)}</p>${kpiTags(REC_KPI[it.t])}</div></div>`;});
     h+=`</div>`;
   });
   h+=`</div>`;
   app().innerHTML=h;
   wireKpiTags();
+  if(highlightRec){
+    const el=[...document.querySelectorAll('.recitem')].find(r=>r.dataset.rec===highlightRec);
+    if(el){ el.classList.add('rec-hl'); el.scrollIntoView({behavior:'smooth',block:'center'}); setTimeout(()=>el.classList.remove('rec-hl'),2200); }
+    highlightRec=null;
+  }
 }
 
 function kpiCard(k){
   const n=k.id?kpiCommitCount(k.id):0;
+  const recs=k.id?recsForKpi(k.id):[];
+  let recBlock='';
+  if(k.id){
+    recBlock=`<div class="krecs"><div class="krecs-h"><i class="ti ti-bulb" style="font-size:12px;vertical-align:-1px"></i> Linked recommendations</div>`;
+    recBlock+= recs.length
+      ? `<ul>${recs.map(t=>`<li><button class="krec" data-recnav="${esc(t)}">${esc(t)}</button></li>`).join('')}</ul>`
+      : `<p class="krecs-none">None directly linked</p>`;
+    recBlock+=`</div>`;
+  }
   return `<div class="kpi" ${k.id?`data-kpi-id="${k.id}"`:''}><span class="kcat kc-${k.cat}">${esc(k.catlbl)}</span>
     <div class="kname">${esc(k.name)}</div>
     <div class="kvals"><span class="kbase">${esc(k.base)}</span><i class="ti ti-arrow-right" style="color:var(--hint)"></i><span class="ktarget">${esc(k.target)}</span></div>
     <div class="kfreq"><i class="ti ti-repeat" style="font-size:12px;vertical-align:-1px"></i> ${esc(k.freq)}</div>
-    ${n?`<div class="klink"><i class="ti ti-arrow-back-up" style="font-size:12px;vertical-align:-1px"></i> advanced by ${n} commitment${n>1?'s':''}</div>`:''}</div>`;
+    ${n?`<div class="klink"><i class="ti ti-arrow-back-up" style="font-size:12px;vertical-align:-1px"></i> advanced by ${n} commitment${n>1?'s':''}</div>`:''}
+    ${recBlock}</div>`;
 }
 function renderKpis(){
   const groups={};
@@ -1092,6 +1123,13 @@ function renderKpis(){
     items.forEach(k=>{h+=kpiCard(k);});
     h+=`</div></div>`;
   });
+  // recommendations not tied to any KPI
+  const untied=untiedRecs();
+  if(untied.length){
+    h+=`<div class="kgroup"><div class="kgrouphead"><span class="kcat kc-none">Not KPI-linked</span><span class="kgcount">${untied.length} recommendation${untied.length>1?'s':''}</span></div>
+      <div class="widget"><p class="phint" style="margin:0 0 12px">Direction-setting and governance recommendations that no single indicator measures.</p>
+        <ul class="untiedlist">`+untied.map(r=>`<li><button class="krec" data-recnav="${esc(r.t)}">${esc(r.t)}</button><span class="untied-grp">${esc(r.group)}</span></li>`).join('')+`</ul></div></div>`;
+  }
   h+=`</div>`;
   app().innerHTML=h;
   if(highlightKpi){

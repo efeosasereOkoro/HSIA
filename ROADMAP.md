@@ -47,6 +47,9 @@ _Last updated: 2026-06-16_
   measures it (so gaps are deliberate, not accidental). Each KPI card shows
   "advanced by N commitments" in reverse; all 11 KPIs have ≥1 driver. (Backlog
   "Recommendations → commitments linking", extended to KPIs.)
+- **KPIs page reverse view** — each KPI card lists its **linked recommendations**
+  (click → jump to and highlight that recommendation); a dedicated "Not
+  KPI-linked" card collects the recommendations tied to no KPI.
 
 ### Communities
 - Seven communities ranked by composite risk (WASH, disease, vulnerability,
