@@ -18,19 +18,22 @@ _Last updated: 2026-06-16_
   and the active register filters.
 
 ### Overview dashboard
-- Stat tiles: total / completed % / due-within-30-days / overdue (overdue
-  emphasised when > 0).
-- **Completion donut** (SVG) with a status legend.
-- **Commitments by category** breakdown.
-- **Drilling readiness** — the five conditions precedent (Table 83) as a
-  cleared / not-cleared gate. The headline compliance signal for the operator.
-- **Upcoming deadlines** feed and **workload by responsible officer** bars.
-- Communities (priority-tier progress) and top KPIs.
+- **Hero-led layout** (decluttered 2026-06-16): the two consequence-carrying
+  things lead the page — **Drilling readiness** (the five conditions precedent
+  from Table 83 as a cleared / not-cleared gate, with per-CP status) and
+  **Overdue** (count + the actual past-due list, or an "all on schedule" state).
+- Then **Completion donut** (SVG, status legend) + **Upcoming deadlines** feed.
+- **Communities** (priority-tier progress) and a slim **KPI link** strip.
 - Dismissible first-run "Getting started" hint.
+- _Moved to the Commitments page_ to reduce crowding: **Commitments by category**
+  and **Workload by responsible officer** breakdowns (they're analysis, and
+  belong where you act on them). The 4 stat tiles were folded into the hero/donut.
 
 ### Commitments register
 - Master list of all 22 commitments.
 - Search; filters by status, owner, condition-precedent; group-by-owner.
+- Top-of-page breakdowns: **Workload by officer** and **By category** (moved
+  here from the Overview).
 - **Evidence gate** — a commitment can't be ticked complete until verification
   evidence is attached (mirrors the SIMP Tracker's evidence requirement).
 - Captured **completion date** shown on completed items.

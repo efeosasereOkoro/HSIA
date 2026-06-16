@@ -355,7 +355,7 @@
 
   .commgrid{display:grid !important;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
 
-  @media(max-width:1100px){.span-3{grid-column:span 6}.span-4{grid-column:span 6}.span-5{grid-column:span 6}}
+  @media(max-width:1100px){.span-3{grid-column:span 6}.span-4,.span-5,.span-6,.span-7,.span-8{grid-column:span 12}}
   @media(max-width:700px){.dash{grid-template-columns:1fr}.dash>[class*="span-"]{grid-column:1 / -1}}
 
   /* start-date lock + first-run + emphasis + focus */
@@ -375,6 +375,23 @@
   .stat.alert{background:var(--over-bg);border-color:transparent}
   .stat.alert .s-lbl{color:var(--over)}
   a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,.cb:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:6px}
+
+  /* overview hero */
+  .cpgate.lg{padding:16px 18px}
+  .cpgate.lg i{font-size:28px}
+  .cpgate.lg b{font-size:16px}
+  .cpgate.lg span{font-size:12.5px}
+  .odcard .od-n{font-size:46px;font-weight:700;letter-spacing:-.03em;line-height:1;color:var(--over)}
+  .odcard.zero .od-n{color:var(--done)}
+  .odcard .od-lbl{font-size:12.5px;color:var(--muted);font-weight:500;margin-top:3px}
+  .odlist{display:flex;flex-direction:column;margin-top:14px}
+  .odl{display:flex;gap:10px;justify-content:space-between;align-items:baseline;padding:8px 0;border-top:1px solid var(--line);font-size:12.5px}
+  .odl:first-child{border-top:none}
+  .odl-t{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .odl-d{color:var(--over);white-space:nowrap;flex:none;font-size:11.5px}
+  .od-ok{display:flex;gap:8px;align-items:flex-start;margin-top:12px;font-size:12.5px;color:var(--done);background:var(--done-bg);padding:10px 12px;border-radius:var(--radius-sm)}
+  .od-ok i{margin-top:1px;flex:none}
+  .kpilink{display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:13px;color:var(--muted)}
 
   .footer{margin-top:34px;font-size:12px;color:var(--hint);border-top:1px solid var(--line);padding-top:16px;line-height:1.7}
   .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
@@ -651,9 +668,6 @@ function renderSummary(){
   const cpOver=cps.filter(c=>statusOf(c).key==='over').length;
   const cleared=cpDone===cps.length;
   const upcoming=COMMITMENTS.filter(c=>statusOf(c).key!=='done').sort((a,b)=>dueDateOf(a)-dueDateOf(b)).slice(0,6);
-  const owners=ownerStats();
-  const cats=categoryStats();
-  const trk=COMMITMENTS.filter(c=>srcOf(c)==='tracker').length;
   const startStamp = state.startSetAt ? 'set '+fmtDate(new Date(state.startSetAt+'T00:00:00')) : 'default · not yet confirmed';
 
   const startCtl = startEditing
@@ -686,13 +700,30 @@ function renderSummary(){
 
   h+=`<div class="dash">`;
 
-  h+=statTile('Total commitments','ti-clipboard-list','si-base',t.total,`${trk} verbatim · ${t.total-trk} derived`);
-  h+=statTile('Completed','ti-circle-check','si-done',`${t.pct}%`,`${t.done} of ${t.total} commitments`);
-  h+=statTile('Due within 30 days','ti-clock-hour-4','si-warn',t.warn,'approaching deadline');
-  h+=statTile('Overdue','ti-alert-triangle','si-over',t.over,t.over?'requires action':'none overdue',t.over>0);
+  // HERO — drilling readiness (the gating compliance fact)
+  h+=`<div class="widget span-8"><div class="w-head"><h3>Drilling readiness</h3><span class="w-sub">5 conditions precedent · Table 83</span></div>
+    <div class="cpgate lg ${cleared?'ok':'block'}"><i class="ti ${cleared?'ti-lock-open':'ti-lock'}"></i>
+      <div><b>${cleared?'Cleared to proceed':'Not cleared for drilling'}</b><span>${cpDone} of ${cps.length} conditions precedent met${cpOver?` · ${cpOver} overdue`:''}</span></div></div>
+    <div class="cpmini">`;
+  cps.forEach(c=>{const st=statusOf(c),k=st.key;h+=`<div class="cpmini-row"><span class="cpdot ${k==='done'?'d':k==='over'?'o':'p'}"></span><span class="cpmini-t">${esc(c.title)}</span><span class="badge ${st.cls}">${st.label}</span></div>`;});
+  h+=`</div></div>`;
+
+  // HERO — overdue (the urgent action list)
+  const ov=COMMITMENTS.filter(c=>statusOf(c).key==='over').sort((a,b)=>dueDateOf(a)-dueDateOf(b));
+  h+=`<div class="widget span-4 odcard ${t.over?'':'zero'}"><div class="w-head"><h3>Overdue</h3>${t.over?'<span class="w-sub" style="color:var(--over)">action needed</span>':''}</div>
+    <div class="od-n">${t.over}</div><div class="od-lbl">${t.over?`commitment${t.over>1?'s':''} past due`:'nothing past due'}</div>`;
+  if(t.over){
+    h+=`<div class="odlist">`;
+    ov.slice(0,5).forEach(c=>{h+=`<div class="odl"><span class="odl-t">${esc(c.title)}${c.cp?' <span class="cpflag">CP</span>':''}</span><span class="odl-d">${fmtDate(dueDateOf(c))}</span></div>`;});
+    h+=`</div>`;
+    if(ov.length>5)h+=`<button class="w-act" id="toOverdue" style="margin-top:11px">View all ${ov.length} →</button>`;
+  }else{
+    h+=`<div class="od-ok"><i class="ti ti-circle-check"></i> Every commitment is on or ahead of schedule.</div>`;
+  }
+  h+=`</div>`;
 
   // completion donut
-  h+=`<div class="widget span-4"><div class="w-head"><h3>Completion</h3></div>
+  h+=`<div class="widget span-4"><div class="w-head"><h3>Completion</h3><span class="w-sub">${t.total} commitments</span></div>
     <div class="donutwrap"><div class="dn-c" role="img" aria-label="${t.pct}% of commitments complete">${donutSVG(t.pct,116,12)}<div class="dn-txt"><b>${t.pct}%</b><small>complete</small></div></div>
       <div class="dn-leg">
         <div class="lg"><span class="dotc c-done"></span>Complete<span class="lg-n">${t.done}</span></div>
@@ -701,36 +732,14 @@ function renderSummary(){
         <div class="lg"><span class="dotc c-over"></span>Overdue<span class="lg-n">${t.over}</span></div>
       </div></div></div>`;
 
-  // commitments by category
-  h+=`<div class="widget span-4"><div class="w-head"><h3>Commitments by category</h3><span class="w-sub">${cats.length} areas</span></div><div class="owbar">`;
-  cats.forEach(c=>{const donePct=pctOf(c.done,c.total),overPct=pctOf(c.over,c.total);
-    h+=`<div class="owrow"><div class="ow-top"><span class="ow-n">${esc(c.cat)}</span><span class="ow-c">${c.done}/${c.total}${c.over?` · ${c.over} overdue`:''}</span></div>
-      <div class="owtrack" aria-hidden="true"><span class="ow-done" style="width:${donePct}%"></span><span class="ow-over" style="width:${overPct}%"></span></div></div>`;});
-  h+=`</div></div>`;
-
-  // drilling readiness — conditions precedent gate
-  h+=`<div class="widget span-4"><div class="w-head"><h3>Drilling readiness</h3><span class="w-sub">Table 83</span></div>
-    <div class="cpgate ${cleared?'ok':'block'}"><i class="ti ${cleared?'ti-lock-open':'ti-lock'}"></i>
-      <div><b>${cleared?'Cleared to proceed':'Not cleared'}</b><span>${cpDone} of ${cps.length} conditions precedent met${cpOver?` · ${cpOver} overdue`:''}</span></div></div>
-    <div class="cpmini">`;
-  cps.forEach(c=>{const k=statusOf(c).key;h+=`<div class="cpmini-row"><span class="cpdot ${k==='done'?'d':k==='over'?'o':'p'}"></span><span class="cpmini-t">${esc(c.title)}</span></div>`;});
-  h+=`</div></div>`;
-
   // upcoming deadlines
-  h+=`<div class="widget span-6"><div class="w-head"><h3>Upcoming deadlines</h3><span class="w-sub">next ${upcoming.length}</span></div><div class="dl">`;
+  h+=`<div class="widget span-8"><div class="w-head"><h3>Upcoming deadlines</h3><span class="w-sub">next ${upcoming.length}</span></div><div class="dl">`;
   if(upcoming.length){
     upcoming.forEach(c=>{const dd=dueDateOf(c),st=statusOf(c);
       h+=`<div class="dl-row"><div class="dl-d"><b>${dd.getDate()}</b><span>${dd.toLocaleDateString('en-GB',{month:'short'})}</span></div>
         <div class="dl-t"><div class="dl-ti">${esc(c.title)}${c.cp?' <span class="cpflag">CP</span>':''}</div><div class="dl-m">${esc(c.owner)}</div></div>
         <span class="badge ${st.cls}">${st.label}</span></div>`;});
   }else{h+=`<div class="emptystate" style="padding:18px 0;border:none">All commitments complete.</div>`;}
-  h+=`</div></div>`;
-
-  // workload by owner
-  h+=`<div class="widget span-6"><div class="w-head"><h3>Workload by responsible officer</h3><button class="w-act" id="toOwners">Open register →</button></div><div class="owbar">`;
-  owners.forEach(o=>{const donePct=pctOf(o.done,o.total),overPct=pctOf(o.over,o.total);
-    h+=`<div class="owrow"><div class="ow-top"><span class="ow-n">${esc(o.owner)}</span><span class="ow-c">${o.done}/${o.total} done${o.over?` · ${o.over} overdue`:''}</span></div>
-      <div class="owtrack"><span class="ow-done" style="width:${donePct}%"></span><span class="ow-over" style="width:${overPct}%"></span></div></div>`;});
   h+=`</div></div>`;
 
   // communities
@@ -744,10 +753,8 @@ function renderSummary(){
       <div class="pct num">${p.pct}%</div></div>`;});
   h+=`</div></div>`;
 
-  // KPIs
-  h+=`<div class="widget span-12"><div class="w-head"><h3>Key performance indicators</h3><button class="w-act" id="allkpis">All ${KPIS.length} →</button></div><div class="kpicards">`;
-  KPIS.slice(0,4).forEach(k=>{h+=kpiCard(k);});
-  h+=`</div></div>`;
+  // KPI link strip
+  h+=`<div class="widget span-12 kpilink"><span>${KPIS.length} performance indicators track whether these commitments translate into outcomes.</span><button class="w-act" id="allkpis">View KPIs →</button></div>`;
 
   h+=`</div></div>`;
   app().innerHTML=h;
@@ -763,7 +770,7 @@ function renderSummary(){
   on('introToReg','click',()=>go('register'));
   on('allkpis','click',()=>go('kpis'));
   on('toComms','click',()=>go('communities'));
-  on('toOwners','click',()=>{reg={q:'',status:'all',owner:'all',cpOnly:false,group:true};go('register');});
+  on('toOverdue','click',()=>{reg={q:'',status:'over',owner:'all',cpOnly:false,group:false};go('register');});
   document.querySelectorAll('.cb').forEach(el=>{
     const open=()=>go('community',el.dataset.cid);
     el.addEventListener('click',open);
@@ -976,10 +983,23 @@ function paintRegList(){
   box.innerHTML=h;
   wireCommits();
 }
+function barRows(rows){
+  let s='<div class="owbar">';
+  rows.forEach(r=>{const donePct=pctOf(r.done,r.total),overPct=pctOf(r.over,r.total);
+    s+=`<div class="owrow"><div class="ow-top"><span class="ow-n">${esc(r.label)}</span><span class="ow-c">${r.done}/${r.total} done${r.over?` · ${r.over} overdue`:''}</span></div>
+      <div class="owtrack" aria-hidden="true"><span class="ow-done" style="width:${donePct}%"></span><span class="ow-over" style="width:${overPct}%"></span></div></div>`;});
+  return s+'</div>';
+}
 function renderRegister(){
   const owners=[...new Set(COMMITMENTS.map(c=>c.owner))].sort();
+  const ostats=ownerStats().map(o=>({label:o.owner,total:o.total,done:o.done,over:o.over}));
+  const cstats=categoryStats().map(c=>({label:c.cat,total:c.total,done:c.done,over:c.over}));
   let h=`<div class="page"><h2 class="ttl">All commitments</h2>
     <p class="sub">The full commitment register — every obligation HEOSL is tracking, across all seven communities. Filter by status or responsible officer, or group by owner to see each role's workload. Tick to complete (evidence required first); changes save automatically.</p>
+    <div class="dash" style="margin-bottom:18px">
+      <div class="widget span-6"><div class="w-head"><h3>Workload by responsible officer</h3></div>${barRows(ostats)}</div>
+      <div class="widget span-6"><div class="w-head"><h3>By category</h3><span class="w-sub">${cstats.length} areas</span></div>${barRows(cstats)}</div>
+    </div>
     <div class="toolbar">
       <div class="searchwrap"><i class="ti ti-search"></i><input id="regq" placeholder="Search title, owner, standard…" value="${esc(reg.q)}" aria-label="Search commitments"></div>
       <select id="regstatus" aria-label="Filter by status">${STATUS_OPTS.map(o=>`<option value="${o[0]}" ${reg.status===o[0]?'selected':''}>${o[1]}</option>`).join('')}</select>
