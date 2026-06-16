@@ -11,8 +11,11 @@ _Last updated: 2026-06-16_
 
 ### Structure & navigation
 - App shell: persistent left **sidebar** + sticky **topbar**, wide content area.
-- Five sections: **Overview**, **Commitments**, **Communities**,
-  **Recommendations**, **KPIs**.
+- Six sections: **Overview**, **Commitments**, **Communities**,
+  **Recommendations**, **KPIs**, **Help**.
+- **Help page** — plain-language how-to: 4-step quick start, what each section
+  does (clickable cards), status legend, conditions-precedent explainer,
+  data-provenance guide, and saving/theme/links notes.
 - **Hash routing** — `#/overview`, `#/commitments?status=…&owner=…`,
   `#/communities/<id>`. Back button, bookmarks and refresh preserve the view
   and the active register filters.

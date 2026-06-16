@@ -278,6 +278,19 @@
   .kgrouphead .kcat{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:4px 11px;border-radius:99px;display:inline-block}
   .kgcount{font-size:12.5px;color:var(--muted);font-weight:500}
 
+  /* help page */
+  .steps{counter-reset:step;list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:15px}
+  .steps li{position:relative;padding-left:42px;font-size:13.5px;line-height:1.55;color:var(--ink)}
+  .steps li::before{counter-increment:step;content:counter(step);position:absolute;left:0;top:-1px;width:28px;height:28px;border-radius:50%;background:var(--brand-soft);color:var(--brand-ink);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+  .help-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:13px;margin-bottom:6px}
+  .help-card{display:flex;gap:13px;align-items:flex-start;text-align:left;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow-sm);transition:transform .16s,box-shadow .16s;font:inherit;color:inherit;width:100%}
+  .help-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+  .help-card .hc-ic{width:34px;height:34px;border-radius:9px;background:var(--brand-soft);color:var(--brand-ink);display:flex;align-items:center;justify-content:center;font-size:18px;flex:none}
+  .help-card b{font-size:14px;font-weight:600}
+  .help-card p{margin:3px 0 0;font-size:12.5px;color:var(--muted);line-height:1.45}
+  .legend{display:flex;flex-wrap:wrap;gap:8px}
+  .help-ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:9px;font-size:13.5px;line-height:1.5;color:var(--ink)}
+
   .startctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:11px 14px;margin-bottom:18px}
   .startctl input[type=date]{font-family:inherit;font-size:13px;border:1px solid var(--line2);border-radius:7px;padding:5px 9px;background:var(--surface);color:var(--ink)}
   .startctl .resetbtn{margin-left:auto}
@@ -436,6 +449,7 @@
       <button data-view="communities"><i class="ti ti-map-pin"></i><span>Communities</span></button>
       <button data-view="asks"><i class="ti ti-bulb"></i><span>Recommendations</span></button>
       <button data-view="kpis"><i class="ti ti-chart-line"></i><span>KPIs</span></button>
+      <button data-view="help"><i class="ti ti-help-circle"></i><span>Help</span></button>
     </nav>
     <div class="side-foot">
       <div class="side-ctx">OML 30 · Delta State</div>
@@ -645,6 +659,7 @@ function render(){
   else if(view.name==='community')renderCommunity(view.param);
   else if(view.name==='asks')renderRecs();
   else if(view.name==='kpis')renderKpis();
+  else if(view.name==='help')renderHelp();
   window.scrollTo({top:0,behavior:'instant'});
 }
 
@@ -973,6 +988,63 @@ function renderKpis(){
   app().innerHTML=h;
 }
 
+/* ---------- HELP ---------- */
+function renderHelp(){
+  const sections=[
+    {v:'summary',icon:'ti-layout-dashboard',name:'Overview',desc:'The at-a-glance dashboard — drilling readiness, what is overdue, completion, upcoming deadlines and community progress.'},
+    {v:'register',icon:'ti-list-check',name:'Commitments',desc:'The full register of all 22 obligations. Search, filter by status or officer, group by owner, attach evidence and mark items complete.'},
+    {v:'communities',icon:'ti-map-pin',name:'Communities',desc:'The seven host communities ranked by risk, each with its own commitments and the asks they raised.'},
+    {v:'asks',icon:'ti-bulb',name:'Recommendations',desc:'The report’s recommendations, grouped by the party responsible for acting on them.'},
+    {v:'kpis',icon:'ti-chart-line',name:'KPIs',desc:'The indicators that measure whether commitments turn into outcomes, grouped by outcome area.'},
+  ];
+  let h=`<div class="page"><h2 class="ttl">Help &amp; how-to</h2>
+    <p class="sub">A short guide to using the platform. There is nothing to learn by heart — everything you change saves automatically to your device.</p>
+
+    <p class="eyebrow">Quick start — four steps</p>
+    <div class="panel"><ol class="steps">
+      <li><b>Set the programme start date.</b> On the <button class="lnk" data-go="summary">Overview</button>, click <i class="ti ti-pencil" style="font-size:12px;vertical-align:-1px"></i> Adjust and set the date the programme begins. Every deadline is calculated from this date.</li>
+      <li><b>Find a commitment.</b> Open <button class="lnk" data-go="register">Commitments</button> (or pick a community) and locate the obligation you are updating.</li>
+      <li><b>Add evidence.</b> Click <b>Add evidence</b> and record the proof — document name, date, reference. Evidence is required before anything can be marked complete.</li>
+      <li><b>Mark it complete.</b> Tick the checkbox. The completion date is recorded automatically and every total updates.</li>
+    </ol></div>
+
+    <p class="eyebrow">The sections</p><div class="help-grid">`;
+  sections.forEach(s=>{h+=`<button class="help-card" data-go="${s.v}"><span class="hc-ic"><i class="ti ${s.icon}"></i></span><div><b>${s.name}</b><p>${esc(s.desc)}</p></div></button>`;});
+  h+=`</div>
+
+    <p class="eyebrow">Reading the statuses</p>
+    <div class="panel"><p class="phint">Every commitment carries a colour-coded status based on its deadline:</p>
+      <div class="legend">
+        <span class="badge b-done">Complete</span>
+        <span class="badge b-prog">On track</span>
+        <span class="badge b-warn">Due in 14d</span>
+        <span class="badge b-over">Overdue 5d</span>
+      </div>
+      <p class="phint" style="margin:12px 0 0"><b>On track</b> — more than 30 days away · <b>Due soon</b> — within 30 days · <b>Overdue</b> — past its date and not yet complete · <b>Complete</b> — done, with evidence attached.</p></div>
+
+    <p class="eyebrow">Drilling readiness &amp; conditions precedent</p>
+    <div class="panel"><p class="phint" style="margin:0">Five commitments are <span class="cpflag">Conditions precedent</span> — they must be complete before any drilling or construction may begin. The <b>Drilling readiness</b> card on the Overview shows whether all five are met (<b>cleared</b>) or not (<b>not cleared</b>), and lists each one with its status.</p></div>
+
+    <p class="eyebrow">Where the data comes from</p>
+    <div class="panel"><p class="phint" style="margin:0">Each commitment is tagged by source:
+      <span class="srctag tracker"><i class="ti ti-circle-check" style="font-size:12px;vertical-align:-1px"></i> SIMP Tracker</span> means it is taken word-for-word from the report’s Action Tracker (Table 73).
+      <span class="srctag derived"><i class="ti ti-info-circle" style="font-size:12px;vertical-align:-1px"></i> Derived</span> means it is an action from the report’s other tables, with its owner and verification reasoned from the SIMP governance roles. Full provenance is in the footnote at the bottom of every page.</p></div>
+
+    <p class="eyebrow">Saving, themes &amp; links</p>
+    <div class="panel"><ul class="help-ul">
+      <li><b>Auto-save.</b> Changes save to this device automatically — the <span class="savedot" style="display:inline-block;vertical-align:middle"></span> <b>Saved</b> indicator in the top bar confirms it.</li>
+      <li><b>Light or dark.</b> Use the <i class="ti ti-moon"></i> button (top-right) to switch theme.</li>
+      <li><b>Bookmarks &amp; Back.</b> Each section has its own web address, so you can bookmark a filtered view (e.g. overdue commitments) and your browser’s Back button works as expected.</li>
+      <li><b>Your data stays on this device.</b> Ticks and evidence notes are stored in this browser only; they are not yet shared between users (planned).</li>
+    </ul></div>
+
+    <p class="eyebrow">Need more?</p>
+    <div class="panel"><p class="phint" style="margin:0">For the meaning of any specific commitment, owner, standard (e.g. PS4, PIA 257) or KPI, refer back to the source HSIA report (Teasoo Consulting, 2026) referenced throughout. Question or issue with the tool itself? Contact the platform administrator.</p></div>
+  </div>`;
+  app().innerHTML=h;
+  document.querySelectorAll('#app [data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+}
+
 /* ---------- COMMITMENT REGISTER ---------- */
 let reg={q:'',status:'all',owner:'all',cpOnly:false,group:false};
 const STATUS_OPTS=[['all','All statuses'],['over','Overdue'],['warn','Due soon (≤30d)'],['prog','On track'],['done','Complete']];
@@ -1048,7 +1120,7 @@ function renderRegister(){
 }
 
 /* ---------- NAV & ROUTING ---------- */
-const SLUG={summary:'overview',register:'commitments',communities:'communities',asks:'recommendations',kpis:'kpis'};
+const SLUG={summary:'overview',register:'commitments',communities:'communities',asks:'recommendations',kpis:'kpis',help:'help'};
 function viewToHash(){
   if(view.name==='community') return '#/communities/'+view.param;
   if(view.name==='register'){
@@ -1068,7 +1140,7 @@ function parseHash(){
   const parts=path.split('/').filter(Boolean);
   const seg=parts[0]||'overview';
   if(seg==='communities' && parts[1]) return {name:'community',param:parts[1]};
-  const map={overview:'summary',commitments:'register',communities:'communities',recommendations:'asks',kpis:'kpis'};
+  const map={overview:'summary',commitments:'register',communities:'communities',recommendations:'asks',kpis:'kpis',help:'help'};
   const name=map[seg]||'summary';
   if(name==='register'){
     const p=new URLSearchParams(query||'');
