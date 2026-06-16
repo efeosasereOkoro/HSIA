@@ -4,55 +4,55 @@
 <title>HEOSL HSIA Commitment Platform</title>
 <style>
   :root{
-    --ink:#1b211e; --muted:#5d655f; --hint:#8a918b;
-    --bg:#f7f5ef; --surface:#ffffff; --surface-2:#fcfbf7; --line:rgba(27,33,30,.10); --line2:rgba(27,33,30,.18);
-    --brand:#0f5c4d; --brand-2:#15806d; --brand-soft:#e3efe9; --brand-ink:#0b463a;
-    --brand-grad:linear-gradient(135deg,#127a66,#0f5c4d);
-    --done:#1d7a4d; --done-bg:#e4f3ea;
-    --over:#b5302e; --over-bg:#fbe9e8;
-    --warn:#9a6410; --warn-bg:#faeeda;
-    --p1:#a32d4e; --p1-bg:#fbeaf0; --p2:#9a6410; --p2-bg:#faeeda; --p3:#5d655f; --p3-bg:#eeede7;
-    --dot:#0f5c4d;
+    --ink:#1e294c; --muted:#4c566f; --hint:#8a90a0;
+    --bg:#ecedf0; --surface:#ffffff; --surface-2:#f6f8fa; --line:rgba(30,41,76,.10); --line2:rgba(30,41,76,.17);
+    --brand:#2d5b8b; --brand-2:#4576a5; --brand-soft:#e7edf5; --brand-ink:#1e294c;
+    --brand-grad:linear-gradient(135deg,#3f6fa6,#243a63);
+    --done:#1f9d57; --done-bg:#e4f3ea;
+    --over:#da2240; --over-bg:#fbe7eb;
+    --warn:#b5740b; --warn-bg:#faecd5;
+    --p1:#c01f33; --p1-bg:#fbe7eb; --p2:#b5740b; --p2-bg:#faecd5; --p3:#4c566f; --p3-bg:#e8eaef;
+    --dot:#2d5b8b;
     --radius:14px; --radius-sm:10px; --radius-lg:22px;
-    --shadow-sm:0 1px 2px rgba(22,32,27,.04),0 1px 3px rgba(22,32,27,.05);
-    --shadow-md:0 1px 2px rgba(22,32,27,.04),0 6px 16px -4px rgba(22,32,27,.08);
-    --shadow-lg:0 12px 32px -8px rgba(22,32,27,.16);
-    --header-bg:rgba(247,245,239,.72);
+    --shadow-sm:0 1px 2px rgba(30,41,76,.05),0 1px 3px rgba(30,41,76,.06);
+    --shadow-md:0 1px 2px rgba(30,41,76,.05),0 6px 16px -4px rgba(30,41,76,.10);
+    --shadow-lg:0 12px 32px -8px rgba(30,41,76,.18);
+    --header-bg:rgba(236,237,240,.72);
     --font:"Inter var","Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
   }
   @media (prefers-color-scheme: dark){
     :root{
-      --ink:#e7e9e5; --muted:#a3aaa3; --hint:#7c837c;
-      --bg:#0f1216; --surface:#1a1e23; --surface-2:#20252b; --line:rgba(231,233,229,.10); --line2:rgba(231,233,229,.20);
-      --brand:#48b89a; --brand-2:#5ad0b0; --brand-soft:#16302a; --brand-ink:#7fd3bd;
-      --brand-grad:linear-gradient(135deg,#3aa588,#2c8770);
-      --done:#5cc08a; --done-bg:#163027;
-      --over:#ef8987; --over-bg:#3a1f1e;
+      --ink:#e8ecf3; --muted:#9aa3b5; --hint:#6b7588;
+      --bg:#0f1320; --surface:#19202e; --surface-2:#212a3a; --line:rgba(232,236,243,.10); --line2:rgba(232,236,243,.19);
+      --brand:#5b8cc4; --brand-2:#7aa6d8; --brand-soft:#1d2c45; --brand-ink:#9cc0e8;
+      --brand-grad:linear-gradient(135deg,#5b8cc4,#3a5f8f);
+      --done:#3ecf8e; --done-bg:#143027;
+      --over:#f4566a; --over-bg:#391c23;
       --warn:#e0a64a; --warn-bg:#352a16;
-      --p1:#e890a8; --p1-bg:#34202a; --p2:#e0a64a; --p2-bg:#352a16; --p3:#a3aaa3; --p3-bg:#262a2e;
-      --dot:#48b89a;
+      --p1:#f4566a; --p1-bg:#391c23; --p2:#e0a64a; --p2-bg:#352a16; --p3:#9aa3b5; --p3-bg:#262d3a;
+      --dot:#5b8cc4;
       --shadow-sm:0 1px 2px rgba(0,0,0,.3); --shadow-md:0 2px 8px rgba(0,0,0,.4); --shadow-lg:0 16px 40px -8px rgba(0,0,0,.6);
-      --header-bg:rgba(15,18,22,.72);
+      --header-bg:rgba(15,19,32,.72);
     }
   }
   [data-theme="light"]{
-    --ink:#1b211e; --muted:#5d655f; --hint:#8a918b; --bg:#f7f5ef; --surface:#ffffff; --surface-2:#fcfbf7;
-    --line:rgba(27,33,30,.10); --line2:rgba(27,33,30,.18); --brand:#0f5c4d; --brand-2:#15806d; --brand-soft:#e3efe9; --brand-ink:#0b463a;
-    --brand-grad:linear-gradient(135deg,#127a66,#0f5c4d);
-    --done:#1d7a4d; --done-bg:#e4f3ea; --over:#b5302e; --over-bg:#fbe9e8; --warn:#9a6410; --warn-bg:#faeeda;
-    --p1:#a32d4e; --p1-bg:#fbeaf0; --p2:#9a6410; --p2-bg:#faeeda; --p3:#5d655f; --p3-bg:#eeede7; --dot:#0f5c4d;
-    --shadow-sm:0 1px 2px rgba(22,32,27,.04),0 1px 3px rgba(22,32,27,.05);
-    --shadow-md:0 1px 2px rgba(22,32,27,.04),0 6px 16px -4px rgba(22,32,27,.08);
-    --shadow-lg:0 12px 32px -8px rgba(22,32,27,.16); --header-bg:rgba(247,245,239,.72);
+    --ink:#1e294c; --muted:#4c566f; --hint:#8a90a0; --bg:#ecedf0; --surface:#ffffff; --surface-2:#f6f8fa;
+    --line:rgba(30,41,76,.10); --line2:rgba(30,41,76,.17); --brand:#2d5b8b; --brand-2:#4576a5; --brand-soft:#e7edf5; --brand-ink:#1e294c;
+    --brand-grad:linear-gradient(135deg,#3f6fa6,#243a63);
+    --done:#1f9d57; --done-bg:#e4f3ea; --over:#da2240; --over-bg:#fbe7eb; --warn:#b5740b; --warn-bg:#faecd5;
+    --p1:#c01f33; --p1-bg:#fbe7eb; --p2:#b5740b; --p2-bg:#faecd5; --p3:#4c566f; --p3-bg:#e8eaef; --dot:#2d5b8b;
+    --shadow-sm:0 1px 2px rgba(30,41,76,.05),0 1px 3px rgba(30,41,76,.06);
+    --shadow-md:0 1px 2px rgba(30,41,76,.05),0 6px 16px -4px rgba(30,41,76,.10);
+    --shadow-lg:0 12px 32px -8px rgba(30,41,76,.18); --header-bg:rgba(236,237,240,.72);
   }
   [data-theme="dark"]{
-    --ink:#e7e9e5; --muted:#a3aaa3; --hint:#7c837c; --bg:#0f1216; --surface:#1a1e23; --surface-2:#20252b;
-    --line:rgba(231,233,229,.10); --line2:rgba(231,233,229,.20); --brand:#48b89a; --brand-2:#5ad0b0; --brand-soft:#16302a; --brand-ink:#7fd3bd;
-    --brand-grad:linear-gradient(135deg,#3aa588,#2c8770);
-    --done:#5cc08a; --done-bg:#163027; --over:#ef8987; --over-bg:#3a1f1e; --warn:#e0a64a; --warn-bg:#352a16;
-    --p1:#e890a8; --p1-bg:#34202a; --p2:#e0a64a; --p2-bg:#352a16; --p3:#a3aaa3; --p3-bg:#262a2e; --dot:#48b89a;
-    --shadow-sm:0 1px 2px rgba(0,0,0,.3); --shadow-md:0 2px 8px rgba(0,0,0,.4); --shadow-lg:0 16px 40px -8px rgba(0,0,0,.6); --header-bg:rgba(15,18,22,.72);
+    --ink:#e8ecf3; --muted:#9aa3b5; --hint:#6b7588; --bg:#0f1320; --surface:#19202e; --surface-2:#212a3a;
+    --line:rgba(232,236,243,.10); --line2:rgba(232,236,243,.19); --brand:#5b8cc4; --brand-2:#7aa6d8; --brand-soft:#1d2c45; --brand-ink:#9cc0e8;
+    --brand-grad:linear-gradient(135deg,#5b8cc4,#3a5f8f);
+    --done:#3ecf8e; --done-bg:#143027; --over:#f4566a; --over-bg:#391c23; --warn:#e0a64a; --warn-bg:#352a16;
+    --p1:#f4566a; --p1-bg:#391c23; --p2:#e0a64a; --p2-bg:#352a16; --p3:#9aa3b5; --p3-bg:#262d3a; --dot:#5b8cc4;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.3); --shadow-md:0 2px 8px rgba(0,0,0,.4); --shadow-lg:0 16px 40px -8px rgba(0,0,0,.6); --header-bg:rgba(15,19,32,.72);
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.55;
@@ -275,6 +275,19 @@
   .ownername{font-size:14px;font-weight:600}
   .ownercount{font-size:12px;color:var(--muted)}
   .emptystate{text-align:center;color:var(--muted);font-size:13.5px;padding:34px 0;border:1px dashed var(--line2);border-radius:var(--radius)}
+
+  /* ask quadrants */
+  .qgroup{margin-bottom:18px}
+  .qgroup:last-child{margin-bottom:0}
+  .qhead{display:flex;align-items:center;gap:11px;margin-bottom:10px}
+  .qhead .qic{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex:none}
+  .qhead h4{font-size:13.5px;font-weight:600;margin:0}
+  .qhead p{font-size:11.5px;margin:1px 0 0;color:var(--muted)}
+  .qhead .qcount{margin-left:auto;font-size:12px;font-weight:600;color:var(--muted);background:var(--bg);border:1px solid var(--line);border-radius:99px;min-width:24px;height:24px;display:flex;align-items:center;justify-content:center;padding:0 8px;flex:none}
+  .q-win .qic{background:var(--done-bg);color:var(--done)}
+  .q-long .qic{background:var(--brand-soft);color:var(--brand-ink)}
+  .q-con .qic{background:var(--warn-bg);color:var(--warn)}
+  .q-dont .qic{background:var(--p3-bg);color:var(--p3)}
 
   /* ----- DASHBOARD ----- */
   .dash-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:20px}
@@ -760,23 +773,22 @@ function renderCommunity(cid){
   cs.forEach(c2=>{h+=commitRow(c2);});
   h+=`</div>`;
 
+  const QUAD=[
+    {label:'Quick wins', desc:'High impact · low effort — prioritise first', icon:'ti-rocket', cls:'q-win', test:a=>a.imp>=6&&a.eff<=5},
+    {label:'Long-term planning', desc:'High impact · high effort — plan and resource', icon:'ti-calendar-stats', cls:'q-long', test:a=>a.imp>=6&&a.eff>=6},
+    {label:'Consider', desc:'Low impact · low effort — fit in opportunistically', icon:'ti-bulb', cls:'q-con', test:a=>a.imp<=5&&a.eff<=5},
+    {label:'Don’t do', desc:'Low impact · high effort — deprioritise', icon:'ti-circle-minus', cls:'q-dont', test:a=>a.imp<=5&&a.eff>=6},
+  ];
   h+=`<p class="eyebrow">What the community is asking</p>
-    <div class="panel"><p class="phint">Community asks plotted by impact against delivery effort, to guide prioritisation. Red points are mandatory / conditions precedent.</p>`;
+    <div class="panel"><p class="phint">Community asks grouped by an impact-versus-effort prioritisation. Mandatory actions and conditions precedent are flagged.</p>`;
   if(aks.length){
-    h+=`<div class="plot">
-      <span class="axl" style="left:-66px;top:-6px">high impact</span>
-      <span class="axl" style="left:-66px;bottom:-6px">low impact</span>
-      <span class="axl" style="left:0;bottom:-22px">low effort</span>
-      <span class="axl" style="right:0;bottom:-22px">high effort</span>
-      <div class="mid-v"></div><div class="mid-h"></div>
-      <span class="quad" style="left:6px;top:6px;color:var(--done)">quick wins</span>
-      <span class="quad" style="right:6px;top:6px;color:var(--warn)">major projects</span>`;
-    aks.forEach(a=>{const x=8+(a.eff-1)/9*84, y=8+(10-a.imp)/9*84;
-      h+=`<div class="dot" style="left:${x.toFixed(1)}%;top:${y.toFixed(1)}%" title="${esc(a.label)} — impact ${a.imp}/10, effort ${a.eff}/10"><span class="pt ${a.mand?'mand':''}"></span><span class="lab">${esc(a.label.split(' ').slice(0,2).join(' '))}</span></div>`;});
-    h+=`</div>`;
-    h+=`<div class="asklist">`;
-    aks.forEach(a=>{h+=`<div class="askrow"><span class="sco">impact ${a.imp} · effort ${a.eff}</span><span class="akt">${esc(a.label)}</span>${a.mand?'<span class="mand">mandatory</span>':''}</div>`;});
-    h+=`</div>`;
+    QUAD.forEach(q=>{
+      const items=aks.filter(q.test);
+      if(!items.length)return;
+      h+=`<div class="qgroup"><div class="qhead ${q.cls}"><span class="qic"><i class="ti ${q.icon}"></i></span><div><h4>${q.label}</h4><p>${q.desc}</p></div><span class="qcount">${items.length}</span></div><div class="asklist">`;
+      items.forEach(a=>{h+=`<div class="askrow"><span class="sco">impact ${a.imp} · effort ${a.eff}</span><span class="akt">${esc(a.label)}</span>${a.mand?'<span class="mand">mandatory</span>':''}</div>`;});
+      h+=`</div></div>`;
+    });
   }else{ h+=`<p class="phint" style="margin:0">No community-specific asks recorded beyond the programme-wide commitments above.</p>`; }
   h+=`</div></div>`;
 
