@@ -58,29 +58,58 @@
   body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.55;
     font-size:15px;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-variant-numeric:tabular-nums;letter-spacing:-.005em;
     background-image:radial-gradient(1200px 480px at 100% -160px,var(--brand-soft),transparent 70%);background-attachment:fixed;}
-  .wrap{max-width:1080px;margin:0 auto;padding:0 18px 64px;}
+  .wrap{max-width:1240px;margin:0 auto;width:100%;padding:24px 30px 72px;}
   a{color:inherit}
   button{font-family:inherit}
   .num{font-variant-numeric:tabular-nums}
   .mono{font-family:var(--mono);font-size:.86em}
 
-  header.top{position:sticky;top:0;z-index:20;background:var(--header-bg);
-    -webkit-backdrop-filter:saturate(1.6) blur(14px);backdrop-filter:saturate(1.6) blur(14px);border-bottom:1px solid var(--line);}
-  .topbar{max-width:1080px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .shell{display:flex;align-items:flex-start;max-width:1560px;margin:0 auto;}
+  .sidebar{position:sticky;top:0;height:100vh;width:248px;flex:none;display:flex;flex-direction:column;
+    padding:20px 16px;border-right:1px solid var(--line);background:var(--surface);gap:6px;z-index:20;}
   .brandmark{display:flex;align-items:center;gap:11px;}
-  .logo{width:36px;height:36px;border-radius:11px;background:var(--brand-grad);color:#fff;display:flex;
+  .sidebar .brandmark{padding:6px 6px 16px;margin-bottom:4px;border-bottom:1px solid var(--line)}
+  .logo{width:38px;height:38px;border-radius:11px;background:var(--brand-grad);color:#fff;display:flex;
     align-items:center;justify-content:center;font-weight:700;font-size:14px;flex:none;letter-spacing:.02em;
     box-shadow:var(--shadow-sm),inset 0 1px 0 rgba(255,255,255,.18);}
-  .brandmark h1{font-size:15px;margin:0;font-weight:600;letter-spacing:-.01em;}
-  .brandmark p{font-size:12px;margin:0;color:var(--muted);}
-  .nav{display:flex;gap:3px;margin-left:auto;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);padding:3px;border-radius:12px;box-shadow:var(--shadow-sm);}
-  .nav button{background:none;border:none;color:var(--muted);font-size:13.5px;font-weight:500;padding:6px 13px;border-radius:9px;cursor:pointer;transition:background .15s,color .15s;}
-  .nav button:hover{color:var(--ink)}
-  .nav button.active{background:var(--brand-soft);color:var(--brand-ink);font-weight:600;}
-  .themebtn{background:var(--surface);border:1px solid var(--line);color:var(--muted);width:36px;height:36px;border-radius:10px;cursor:pointer;font-size:16px;box-shadow:var(--shadow-sm);transition:color .15s,transform .15s;}
-  .themebtn:hover{color:var(--ink);transform:translateY(-1px)}
-  .savetag{font-size:11px;color:var(--hint);display:flex;align-items:center;gap:5px;}
+  .brandtext h1{font-size:15px;margin:0;font-weight:700;letter-spacing:-.02em;line-height:1.1}
+  .brandtext p{font-size:11.5px;margin:1px 0 0;color:var(--muted);font-weight:500}
+  .main{flex:1;min-width:0;display:flex;flex-direction:column;min-height:100vh}
+
+  .nav{display:flex;flex-direction:column;gap:2px;}
+  .nav button{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:none;border:none;
+    color:var(--muted);font-size:14px;font-weight:500;padding:9px 11px;border-radius:10px;cursor:pointer;transition:background .15s,color .15s;}
+  .nav button i{font-size:18px;width:20px;text-align:center;flex:none}
+  .nav button:hover{background:var(--brand-soft);color:var(--ink)}
+  .nav button.active{background:var(--brand-soft);color:var(--brand-ink);font-weight:600;box-shadow:inset 3px 0 0 var(--brand)}
+  .side-foot{margin-top:auto;padding:14px 8px 2px;border-top:1px solid var(--line)}
+  .side-ctx{font-size:12px;font-weight:600;color:var(--ink)}
+  .side-sub{font-size:11px;color:var(--hint);margin-top:2px;line-height:1.4}
+
+  .topbar{position:sticky;top:0;z-index:15;display:flex;align-items:center;gap:14px;padding:13px 30px;
+    background:var(--header-bg);-webkit-backdrop-filter:saturate(1.6) blur(14px);backdrop-filter:saturate(1.6) blur(14px);border-bottom:1px solid var(--line);}
+  .tb-ctx{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:7px;font-weight:500}
+  .tb-ctx i{color:var(--brand);font-size:15px}
+  .savetag{font-size:11px;color:var(--hint);display:flex;align-items:center;gap:5px;margin-left:auto;}
   .savedot{width:7px;height:7px;border-radius:50%;background:var(--done)}
+  .themebtn{background:var(--surface);border:1px solid var(--line);color:var(--muted);width:36px;height:36px;border-radius:10px;cursor:pointer;font-size:16px;box-shadow:var(--shadow-sm);transition:color .15s,transform .15s;flex:none}
+  .themebtn:hover{color:var(--ink);transform:translateY(-1px)}
+
+  @media(max-width:880px){
+    .shell{flex-direction:column;max-width:100%}
+    .sidebar{position:sticky;top:0;width:100%;height:auto;flex-direction:row;align-items:center;gap:10px;
+      padding:9px 14px;border-right:none;border-bottom:1px solid var(--line);overflow-x:auto;
+      -webkit-backdrop-filter:saturate(1.6) blur(14px);backdrop-filter:saturate(1.6) blur(14px);background:var(--header-bg)}
+    .sidebar .brandmark{padding:0;margin:0;border:none;flex:none}
+    .brandtext{display:none}
+    .nav{flex-direction:row;gap:3px;flex:1}
+    .nav button{white-space:nowrap;padding:8px 11px;width:auto}
+    .nav button.active{box-shadow:none}
+    .side-foot{display:none}
+    .topbar{padding:11px 16px}
+    .tb-ctx{display:none}
+    .wrap{padding:18px 16px 56px}
+  }
 
   .page{padding-top:24px;animation:fade .25s ease}
   @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1}}
@@ -247,6 +276,75 @@
   .ownercount{font-size:12px;color:var(--muted)}
   .emptystate{text-align:center;color:var(--muted);font-size:13.5px;padding:34px 0;border:1px dashed var(--line2);border-radius:var(--radius)}
 
+  /* ----- DASHBOARD ----- */
+  .dash-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+  .dash{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;align-items:start}
+  .widget{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-sm);min-width:0}
+  .w-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:15px}
+  .w-head h3{font-size:13px;font-weight:600;margin:0;color:var(--ink)}
+  .w-head .w-sub{font-size:11px;color:var(--hint);font-weight:500;text-transform:uppercase;letter-spacing:.04em}
+  .w-act{font-size:12px;color:var(--brand);background:none;border:none;cursor:pointer;font-weight:600;padding:0}
+  .w-act:hover{text-decoration:underline;text-underline-offset:2px}
+  .span-3{grid-column:span 3}.span-4{grid-column:span 4}.span-5{grid-column:span 5}.span-6{grid-column:span 6}.span-12{grid-column:span 12}
+
+  .stat{display:flex;flex-direction:column}
+  .stat .s-lbl{font-size:12.5px;color:var(--muted);font-weight:500;display:flex;align-items:center;gap:9px}
+  .stat .s-ic{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex:none}
+  .stat .s-val{font-size:33px;font-weight:700;letter-spacing:-.03em;line-height:1.1;margin:12px 0 2px}
+  .stat .s-foot{font-size:11.5px;color:var(--hint)}
+  .stat.alert .s-val{color:var(--over)}
+  .si-base{background:var(--brand-soft);color:var(--brand-ink)} .si-done{background:var(--done-bg);color:var(--done)}
+  .si-over{background:var(--over-bg);color:var(--over)} .si-warn{background:var(--warn-bg);color:var(--warn)}
+
+  .donutwrap{display:flex;align-items:center;gap:20px}
+  .dn-c{position:relative;flex:none}
+  .dn-txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .dn-txt b{font-size:25px;font-weight:700;letter-spacing:-.03em}
+  .dn-txt small{font-size:9px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-top:1px}
+  .dn-leg{display:flex;flex-direction:column;gap:8px;font-size:13px;flex:1;min-width:0}
+  .dn-leg .lg{display:flex;align-items:center;gap:9px;color:var(--muted)}
+  .dn-leg .lg .dotc{width:9px;height:9px;border-radius:3px;flex:none}
+  .dn-leg .lg .lg-n{margin-left:auto;font-weight:600;color:var(--ink)}
+  .c-done{background:var(--done)}.c-prog{background:var(--brand)}.c-warn{background:var(--warn)}.c-over{background:var(--over)}
+
+  .stackbar{display:flex;height:16px;border-radius:99px;overflow:hidden;background:var(--bg);gap:2px;box-shadow:inset 0 0 0 1px var(--line)}
+  .stackbar .seg{min-width:4px}
+  .seg.s-done{background:var(--done)}.seg.s-prog{background:var(--brand)}.seg.s-warn{background:var(--warn)}.seg.s-over{background:var(--over)}
+
+  .cpgate{display:flex;align-items:center;gap:13px;padding:13px 15px;border-radius:var(--radius-sm);margin-bottom:15px}
+  .cpgate i{font-size:24px;flex:none}
+  .cpgate b{display:block;font-size:14.5px;font-weight:700}
+  .cpgate span{font-size:12px;opacity:.9}
+  .cpgate.ok{background:var(--done-bg);color:var(--done)} .cpgate.block{background:var(--over-bg);color:var(--over)}
+  .cpmini{display:flex;flex-direction:column;gap:9px}
+  .cpmini-row{display:flex;align-items:center;gap:10px;font-size:12.5px}
+  .cpdot{width:8px;height:8px;border-radius:50%;flex:none;background:var(--hint)}
+  .cpdot.d{background:var(--done)}.cpdot.o{background:var(--over)}.cpdot.p{background:var(--warn)}
+  .cpmini-t{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+
+  .dl{display:flex;flex-direction:column}
+  .dl-row{display:flex;align-items:center;gap:13px;padding:11px 0;border-top:1px solid var(--line)}
+  .dl-row:first-child{border-top:none}
+  .dl-d{flex:none;width:44px;text-align:center;background:var(--bg);border-radius:8px;padding:5px 0}
+  .dl-d b{display:block;font-size:17px;font-weight:700;line-height:1}
+  .dl-d span{font-size:10px;color:var(--hint);text-transform:uppercase;letter-spacing:.03em}
+  .dl-t{flex:1;min-width:0}
+  .dl-t .dl-ti{font-size:13.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .dl-t .dl-m{font-size:11.5px;color:var(--muted);margin-top:1px}
+
+  .owbar{display:flex;flex-direction:column;gap:14px}
+  .owrow{display:flex;flex-direction:column;gap:6px}
+  .ow-top{display:flex;align-items:baseline;gap:8px;font-size:13px}
+  .ow-top .ow-n{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ow-top .ow-c{margin-left:auto;color:var(--muted);font-size:11.5px;white-space:nowrap;flex:none}
+  .owtrack{height:8px;border-radius:99px;background:var(--bg);overflow:hidden;display:flex;box-shadow:inset 0 0 0 1px var(--line)}
+  .owtrack .ow-done{background:var(--brand-grad)} .owtrack .ow-over{background:var(--over)}
+
+  .commgrid{display:grid !important;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+
+  @media(max-width:1100px){.span-3{grid-column:span 6}.span-4{grid-column:span 6}.span-5{grid-column:span 6}}
+  @media(max-width:700px){.dash{grid-template-columns:1fr}.dash>[class*="span-"]{grid-column:1 / -1}}
+
   .footer{margin-top:34px;font-size:12px;color:var(--hint);border-top:1px solid var(--line);padding-top:16px;line-height:1.7}
   .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
 </style>
@@ -255,31 +353,39 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.30.0/tabler-icons.min.css">
 
-<header class="top">
-  <div class="topbar">
+<div class="shell">
+  <aside class="sidebar">
     <div class="brandmark">
       <div class="logo">HS</div>
-      <div>
-        <h1>HEOSL HSIA commitment platform</h1>
-        <p>Aferolow–Uzere development · OML 30 · Delta State</p>
+      <div class="brandtext">
+        <h1>HEOSL HSIA</h1>
+        <p>Commitment platform</p>
       </div>
     </div>
     <nav class="nav" id="nav">
-      <button data-view="summary" class="active">Summary</button>
-      <button data-view="register">Commitments</button>
-      <button data-view="communities">Communities</button>
-      <button data-view="asks">Recommendations</button>
-      <button data-view="kpis">KPIs</button>
+      <button data-view="summary" class="active"><i class="ti ti-layout-dashboard"></i><span>Overview</span></button>
+      <button data-view="register"><i class="ti ti-list-check"></i><span>Commitments</span></button>
+      <button data-view="communities"><i class="ti ti-map-pin"></i><span>Communities</span></button>
+      <button data-view="asks"><i class="ti ti-bulb"></i><span>Recommendations</span></button>
+      <button data-view="kpis"><i class="ti ti-chart-line"></i><span>KPIs</span></button>
     </nav>
-    <span class="savetag" id="savetag"><span class="savedot"></span>Saved</span>
-    <button class="themebtn" id="themebtn" aria-label="Toggle light or dark theme"><i class="ti ti-moon"></i></button>
-  </div>
-</header>
-
-<div class="wrap"><div id="app"></div>
+    <div class="side-foot">
+      <div class="side-ctx">OML 30 · Delta State</div>
+      <div class="side-sub">Aferolow–Uzere New Field Development</div>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="tb-ctx"><i class="ti ti-map-2"></i> Aferolow–Uzere development · OML 30 · Delta State</div>
+      <span class="savetag" id="savetag"><span class="savedot"></span>Saved</span>
+      <button class="themebtn" id="themebtn" aria-label="Toggle light or dark theme"><i class="ti ti-moon"></i></button>
+    </header>
+    <div class="wrap"><div id="app"></div>
   <div class="footer">
     Source: HEOSL Health &amp; Social Impact Assessment (Aferolow–Uzere New Field Development), prepared by Teasoo Consulting Limited, 2026. Commitments drawn from the SIMP Action Tracker (Table 73), Mitigation Measures (Table 71) and the community asks (Table 70); mandatory conditions precedent from Table 83. Community weighting from the Composite Priority Ranking (Table 69); KPIs verbatim from Table 74; recommendations from sections 16.3–16.6.<br>
     Verified against the report: the 14 “SIMP Tracker” commitments reproduce the report’s owner and verification evidence exactly. The 8 “Derived” commitments reproduce the report’s action, target communities, standard and timeline; their responsible officer is mapped to the SIMP governance roles in §11.2 and their verification text is a suggested artifact, not report wording. Deadlines are computed from an assumed, editable programme-start date because the report states obligations as relative timeframes (e.g. “30 days”, “Year 1 Q1”). Impact and effort scores for community asks are working estimates derived from the Impact Significance Matrix (Table 68) and stated demand (Table 53) — a prioritisation aid, not findings from the report. Your ticks and evidence notes are saved to this device.
+  </div>
+    </div>
   </div>
 </div>
 
@@ -470,46 +576,106 @@ function render(){
   window.scrollTo({top:0,behavior:'instant'});
 }
 
+function pctOf(n,d){return d?Math.round(n/d*100):0;}
+function donutSVG(pct,size,sw){
+  const r=(size-sw)/2,c=2*Math.PI*r,off=c*(1-pct/100),m=size/2;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    <defs><linearGradient id="dgrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" style="stop-color:var(--brand-2)"/><stop offset="1" style="stop-color:var(--brand)"/></linearGradient></defs>
+    <circle cx="${m}" cy="${m}" r="${r}" fill="none" stroke="var(--line)" stroke-width="${sw}"/>
+    <circle cx="${m}" cy="${m}" r="${r}" fill="none" stroke="url(#dgrad)" stroke-width="${sw}" stroke-linecap="round"
+      stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" transform="rotate(-90 ${m} ${m})"/></svg>`;
+}
+function statTile(lbl,icon,icls,val,foot,alert){
+  return `<div class="widget span-3 stat ${alert?'alert':''}">
+    <div class="s-lbl"><span class="s-ic ${icls}"><i class="ti ${icon}"></i></span>${lbl}</div>
+    <div class="s-val num">${val}</div><div class="s-foot">${foot}</div></div>`;
+}
+function statusBar(t){
+  const seg=(n,cls)=>n?`<span class="seg ${cls}" style="flex:${n}" title="${n}"></span>`:'';
+  return `<div class="stackbar">${seg(t.done,'s-done')}${seg(t.prog,'s-prog')}${seg(t.warn,'s-warn')}${seg(t.over,'s-over')}</div>`;
+}
+function ownerStats(){
+  const m={};
+  COMMITMENTS.forEach(c=>{const k=c.owner;if(!m[k])m[k]={owner:k,total:0,done:0,over:0};m[k].total++;
+    const s=statusOf(c).key;if(s==='done')m[k].done++;if(s==='over')m[k].over++;});
+  return Object.values(m).sort((a,b)=>b.over-a.over||b.total-a.total);
+}
+
 function renderSummary(){
   const t=totals();
-  const overdue=COMMITMENTS.filter(c=>statusOf(c).key==='over');
   const cps=COMMITMENTS.filter(c=>c.cp);
-  const topKpis=KPIS.slice(0,4);
+  const cpDone=cps.filter(c=>statusOf(c).key==='done').length;
+  const cpOver=cps.filter(c=>statusOf(c).key==='over').length;
+  const cleared=cpDone===cps.length;
+  const upcoming=COMMITMENTS.filter(c=>statusOf(c).key!=='done').sort((a,b)=>dueDateOf(a)-dueDateOf(b)).slice(0,6);
+  const owners=ownerStats();
+  const trk=COMMITMENTS.filter(c=>srcOf(c)==='tracker').length;
+
   let h=`<div class="page">
-    <h2 class="ttl">Programme summary</h2>
-    <p class="sub">Live status across all commitments made to the seven OML 30 host communities. Tick a commitment on its community page — evidence must be attached first — and totals here update automatically.</p>
-
-    <div class="startctl">
-      <i class="ti ti-calendar-event"></i>
-      <span>Assumed programme start (anchors all deadlines):</span>
-      <input type="date" id="startdate" value="${state.start}">
-      <button class="lnk resetbtn" id="resetstart">Reset to default</button>
+    <div class="dash-head">
+      <div><h2 class="ttl">Programme overview</h2>
+        <p class="sub" style="margin:0">Live compliance status across all ${t.total} commitments to the seven OML 30 host communities.</p></div>
+      <div class="startctl" style="margin:0">
+        <i class="ti ti-calendar-event"></i><span>Programme start</span>
+        <input type="date" id="startdate" value="${state.start}">
+        <button class="lnk resetbtn" id="resetstart">Reset</button>
+      </div>
     </div>
+    <div class="dash">`;
 
-    <div class="cards">
-      <div class="metric"><div class="lbl">Total commitments</div><div class="val num">${t.total}</div></div>
-      <div class="metric"><div class="lbl">Completed</div><div class="val num">${t.pct}% <small>· ${t.done}</small></div></div>
-      <div class="metric"><div class="lbl">On track / upcoming</div><div class="val num">${t.prog+t.warn}</div></div>
-      <div class="metric ${t.over?'alert':''}"><div class="lbl">Overdue</div><div class="val num">${t.over}</div></div>
-    </div>`;
+  h+=statTile('Total commitments','ti-clipboard-list','si-base',t.total,`${trk} verbatim · ${t.total-trk} derived`);
+  h+=statTile('Completed','ti-circle-check','si-done',`${t.pct}%`,`${t.done} of ${t.total} commitments`);
+  h+=statTile('Due within 30 days','ti-clock-hour-4','si-warn',t.warn,'approaching deadline');
+  h+=statTile('Overdue','ti-alert-triangle','si-over',t.over,t.over?'requires action':'none overdue',t.over>0);
 
-  if(overdue.length){
-    h+=`<div class="banner"><i class="ti ti-alert-triangle"></i><div class="b-body">
-      <b>${overdue.length} commitment${overdue.length>1?'s':''} overdue.</b>
-      <ul>`+overdue.map(c=>`<li><span>${esc(c.title)}${c.cp?' <span class="cpflag">Condition precedent</span>':''}</span><span class="od">· due ${fmtDate(dueDateOf(c))}</span></li>`).join('')+`</ul>
+  // completion donut
+  h+=`<div class="widget span-4"><div class="w-head"><h3>Completion</h3></div>
+    <div class="donutwrap"><div class="dn-c">${donutSVG(t.pct,116,12)}<div class="dn-txt"><b>${t.pct}%</b><small>complete</small></div></div>
+      <div class="dn-leg">
+        <div class="lg"><span class="dotc c-done"></span>Complete<span class="lg-n">${t.done}</span></div>
+        <div class="lg"><span class="dotc c-prog"></span>On track<span class="lg-n">${t.prog}</span></div>
+        <div class="lg"><span class="dotc c-warn"></span>Due soon<span class="lg-n">${t.warn}</span></div>
+        <div class="lg"><span class="dotc c-over"></span>Overdue<span class="lg-n">${t.over}</span></div>
+      </div></div></div>`;
+
+  // status distribution
+  h+=`<div class="widget span-4"><div class="w-head"><h3>Status distribution</h3></div>
+    ${statusBar(t)}
+    <div class="dn-leg" style="margin-top:15px">
+      <div class="lg"><span class="dotc c-done"></span>Complete<span class="lg-n">${pctOf(t.done,t.total)}%</span></div>
+      <div class="lg"><span class="dotc c-prog"></span>On track<span class="lg-n">${pctOf(t.prog,t.total)}%</span></div>
+      <div class="lg"><span class="dotc c-warn"></span>Due soon<span class="lg-n">${pctOf(t.warn,t.total)}%</span></div>
+      <div class="lg"><span class="dotc c-over"></span>Overdue<span class="lg-n">${pctOf(t.over,t.total)}%</span></div>
     </div></div>`;
-  }
 
-  h+=`<p class="eyebrow">Data provenance</p>
-    <div class="panel"><p class="phint" style="margin:0">Every commitment, community ranking, KPI and recommendation in this platform is drawn from the HSIA report. Of the ${COMMITMENTS.length} tracked commitments, <b>${COMMITMENTS.filter(c=>srcOf(c)==='tracker').length}</b> come verbatim from the SIMP Action Tracker (Table 73) — including their owner and required verification — marked <span class="srctag tracker"><i class="ti ti-circle-check" style="font-size:12px;vertical-align:-1px"></i> SIMP Tracker</span>. The other <b>${COMMITMENTS.filter(c=>srcOf(c)==='derived').length}</b> are actions the report commits to in the community-asks and mitigation tables (Tables 70–71); their owner is mapped to the report's SIMP governance roles (§11.2) and their verification is suggested, marked <span class="srctag derived"><i class="ti ti-info-circle" style="font-size:12px;vertical-align:-1px"></i> Derived</span>.</p></div>`;
-
-  h+=`<p class="eyebrow">Mandatory conditions precedent</p>
-    <div class="panel"><p class="phint">The five mandatory conditions precedent from Table 83 — non-negotiable actions that must be complete before any drilling or construction. Status reflects your ticks.</p><div class="cprow">`;
-  cps.forEach((c,i)=>{const st=statusOf(c);
-    h+=`<div class="cp"><div class="cpn">${i+1}</div><div class="cpt">${esc(c.title)}<small>${esc(c.owner)} · due ${fmtDate(dueDateOf(c))}</small></div><span class="badge ${st.cls}">${st.label}</span></div>`;});
+  // drilling readiness — conditions precedent gate
+  h+=`<div class="widget span-4"><div class="w-head"><h3>Drilling readiness</h3><span class="w-sub">Table 83</span></div>
+    <div class="cpgate ${cleared?'ok':'block'}"><i class="ti ${cleared?'ti-lock-open':'ti-lock'}"></i>
+      <div><b>${cleared?'Cleared to proceed':'Not cleared'}</b><span>${cpDone} of ${cps.length} conditions precedent met${cpOver?` · ${cpOver} overdue`:''}</span></div></div>
+    <div class="cpmini">`;
+  cps.forEach(c=>{const k=statusOf(c).key;h+=`<div class="cpmini-row"><span class="cpdot ${k==='done'?'d':k==='over'?'o':'p'}"></span><span class="cpmini-t">${esc(c.title)}</span></div>`;});
   h+=`</div></div>`;
 
-  h+=`<p class="eyebrow">Community breakdown — weighted by priority tier</p><div class="commbreak">`;
+  // upcoming deadlines
+  h+=`<div class="widget span-6"><div class="w-head"><h3>Upcoming deadlines</h3><span class="w-sub">next ${upcoming.length}</span></div><div class="dl">`;
+  if(upcoming.length){
+    upcoming.forEach(c=>{const dd=dueDateOf(c),st=statusOf(c);
+      h+=`<div class="dl-row"><div class="dl-d"><b>${dd.getDate()}</b><span>${dd.toLocaleDateString('en-GB',{month:'short'})}</span></div>
+        <div class="dl-t"><div class="dl-ti">${esc(c.title)}${c.cp?' <span class="cpflag">CP</span>':''}</div><div class="dl-m">${esc(c.owner)}</div></div>
+        <span class="badge ${st.cls}">${st.label}</span></div>`;});
+  }else{h+=`<div class="emptystate" style="padding:18px 0;border:none">All commitments complete.</div>`;}
+  h+=`</div></div>`;
+
+  // workload by owner
+  h+=`<div class="widget span-6"><div class="w-head"><h3>Workload by responsible officer</h3><button class="w-act" id="toOwners">Open register →</button></div><div class="owbar">`;
+  owners.forEach(o=>{const donePct=pctOf(o.done,o.total),overPct=pctOf(o.over,o.total);
+    h+=`<div class="owrow"><div class="ow-top"><span class="ow-n">${esc(o.owner)}</span><span class="ow-c">${o.done}/${o.total} done${o.over?` · ${o.over} overdue`:''}</span></div>
+      <div class="owtrack"><span class="ow-done" style="width:${donePct}%"></span><span class="ow-over" style="width:${overPct}%"></span></div></div>`;});
+  h+=`</div></div>`;
+
+  // communities
+  h+=`<div class="widget span-12"><div class="w-head"><h3>Communities — weighted by priority tier</h3><button class="w-act" id="toComms">View all →</button></div><div class="commbreak commgrid">`;
   [...COMMUNITIES].forEach(c=>{const p=communityProgress(c.id);
     h+=`<div class="cb" data-cid="${c.id}" role="button" tabindex="0">
       <div><div class="cbhead">${esc(c.name)} <span class="tier t${c.tier}">Priority ${c.tier}</span></div>
@@ -517,18 +683,21 @@ function renderSummary(){
         <div class="bar"><span style="width:${p.pct}%"></span></div>
         ${p.over?`<span class="odpill">${p.over} overdue</span>`:''}</div>
       <div class="pct num">${p.pct}%</div></div>`;});
-  h+=`</div>`;
+  h+=`</div></div>`;
 
-  h+=`<p class="eyebrow">Key performance indicators</p><div class="kpicards">`;
-  topKpis.forEach(k=>{h+=kpiCard(k);});
-  h+=`</div><div style="margin-top:12px"><button class="btn ghost" id="allkpis">View all ${KPIS.length} indicators →</button></div>`;
+  // KPIs
+  h+=`<div class="widget span-12"><div class="w-head"><h3>Key performance indicators</h3><button class="w-act" id="allkpis">All ${KPIS.length} →</button></div><div class="kpicards">`;
+  KPIS.slice(0,4).forEach(k=>{h+=kpiCard(k);});
+  h+=`</div></div>`;
 
-  h+=`</div>`;
+  h+=`</div></div>`;
   app().innerHTML=h;
 
   document.getElementById('startdate').addEventListener('change',e=>{state.start=e.target.value||DEFAULT_START;saveState();render();});
   document.getElementById('resetstart').addEventListener('click',()=>{state.start=DEFAULT_START;saveState();render();});
-  document.getElementById('allkpis').addEventListener('click',()=>{go('kpis');});
+  document.getElementById('allkpis').addEventListener('click',()=>go('kpis'));
+  document.getElementById('toComms').addEventListener('click',()=>go('communities'));
+  document.getElementById('toOwners').addEventListener('click',()=>{reg={q:'',status:'all',owner:'all',cpOnly:false,group:true};go('register');});
   document.querySelectorAll('.cb').forEach(el=>{
     const open=()=>go('community',el.dataset.cid);
     el.addEventListener('click',open);
