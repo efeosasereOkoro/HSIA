@@ -273,6 +273,10 @@
   .kc-health{background:var(--over-bg);color:var(--over)} .kc-gender{background:var(--p1-bg);color:var(--p1)}
   .kc-econ{background:var(--brand-soft);color:var(--brand-ink)} .kc-incl{background:var(--warn-bg);color:var(--warn)}
   .kc-gov{background:var(--p3-bg);color:var(--p3)} .kc-food{background:var(--done-bg);color:var(--done)}
+  .kgroup{margin-bottom:24px} .kgroup:last-child{margin-bottom:0}
+  .kgrouphead{display:flex;align-items:center;gap:11px;margin:0 0 13px}
+  .kgrouphead .kcat{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:4px 11px;border-radius:99px;display:inline-block}
+  .kgcount{font-size:12.5px;color:var(--muted);font-weight:500}
 
   .startctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:11px 14px;margin-bottom:18px}
   .startctl input[type=date]{font-family:inherit;font-size:13px;border:1px solid var(--line2);border-radius:7px;padding:5px 9px;background:var(--surface);color:var(--ink)}
@@ -954,11 +958,18 @@ function kpiCard(k){
     <div class="kfreq"><i class="ti ti-repeat" style="font-size:12px;vertical-align:-1px"></i> ${esc(k.freq)}</div></div>`;
 }
 function renderKpis(){
+  const groups={};
+  KPIS.forEach(k=>{(groups[k.cat]=groups[k.cat]||[]).push(k);});
+  const cats=Object.keys(groups).sort((a,b)=>groups[b].length-groups[a].length || groups[a][0].catlbl.localeCompare(groups[b][0].catlbl));
   let h=`<div class="page"><h2 class="ttl">Key performance indicators</h2>
-    <p class="sub">The eleven monitoring indicators that measure whether commitments translate into outcomes. Each shows the survey baseline, the target, the indicator it tracks, and how often it is measured.</p>
-    <div class="kpicards">`;
-  KPIS.forEach(k=>{h+=kpiCard(k);});
-  h+=`</div></div>`;
+    <p class="sub">The ${KPIS.length} monitoring indicators that measure whether commitments translate into outcomes, grouped by the outcome area they track. Each shows the survey baseline, the target, and how often it is measured.</p>`;
+  cats.forEach(cat=>{
+    const items=groups[cat];
+    h+=`<div class="kgroup"><div class="kgrouphead"><span class="kcat kc-${cat}">${esc(items[0].catlbl)}</span><span class="kgcount">${items.length} indicator${items.length>1?'s':''}</span></div><div class="kpicards">`;
+    items.forEach(k=>{h+=kpiCard(k);});
+    h+=`</div></div>`;
+  });
+  h+=`</div>`;
   app().innerHTML=h;
 }
 
